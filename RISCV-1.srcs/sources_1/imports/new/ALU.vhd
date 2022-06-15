@@ -129,16 +129,16 @@ begin
             JumpTargetO <= JumpTargetI;
         END IF;
 
-        -- Handle Memory
-        IF MemWrEn = '1' THEN
-            MemByteEna <= "1111";
-        ELSE
-            MemByteEna <= "0000";
-        END IF;
-
         IF Clear = '0' THEN
             DestWrEnO <= DestWrEnI;
             MemAccessO <= MemAccessI;
+
+            -- Handle Memory
+            IF MemWrEn = '1' THEN
+                MemByteEna <= "1111";
+            ELSE
+                MemByteEna <= "0000";
+            END IF;
 
             -- Handle branch
             IF JumpI = '0' AND JumpRel = '1' THEN
@@ -158,6 +158,7 @@ begin
             DestWrEnO <= '0';
             JumpO <= '0';
             MemAccessO <= '0';
+            MemByteEna <= "0000";
         END IF;
     END PROCESS;
 end Behavioral;
