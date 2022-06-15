@@ -82,6 +82,7 @@ begin
     -- JumpTarget needs special care
     -- MemAccess needs special care
     -- MemWrEn needs special care
+    -- InterlockO needs special care
     -- Imm needs special care
     -- SelSrc2 needs special care
 
@@ -91,6 +92,7 @@ begin
         VARIABLE JumpRelV   : STD_LOGIC;
         VARIABLE MemAccessV : STD_LOGIC;
         VARIABLE MemWrEnV   : STD_LOGIC;
+        VARIABLE InterlockV : STD_LOGIC;
         VARIABLE ImmS       : STD_LOGIC_VECTOR (11 downto 0);
         VARIABLE ImmB       : STD_LOGIC_VECTOR (12 downto 0);
         VARIABLE ImmJ       : STD_LOGIC_VECTOR (20 downto 0);
@@ -109,6 +111,7 @@ begin
                 JumpTarget <= IDC_32;
                 MemAccessV := '0';
                 MemWrEnV := '0';
+                InterlockV := '0';
                 Imm <= IDC_32;
                 SelSrc2 <= '1'; -- use SrcRegNo1 as B
             WHEN opcode_OP_IMM =>
@@ -126,6 +129,7 @@ begin
                 JumpTarget <= IDC_32;
                 MemAccessV := '0';
                 MemWrEnV := '0';
+                InterlockV := '0';
                 Imm <= std_logic_vector(resize(signed(Imm12A), 32));
                 SelSrc2 <= '0'; -- use Imm as B
             WHEN opcode_LUI =>
@@ -140,6 +144,7 @@ begin
                 JumpTarget <= IDC_32;
                 MemAccessV := '0';
                 MemWrEnV := '0';
+                InterlockV := '0';
                 Imm <= Imm20A & x"000"; -- pad 20 bit immediate with 12 bits at the end
                 SelSrc2 <= '0'; -- use Imm as B
             WHEN opcode_AUIPC =>
@@ -154,6 +159,7 @@ begin
                 JumpTarget <= IDC_32;
                 MemAccessV := '0';
                 MemWrEnV := '0';
+                InterlockV := '0';
                 Imm <= std_logic_vector(signed(PC) + signed(Imm20A & x"000")); -- pad 20 bit immediate with 12 bits at the end
                 SelSrc2 <= '0'; -- use Imm as B
             WHEN opcode_JAL =>
@@ -169,6 +175,7 @@ begin
                 JumpTarget <= std_logic_vector(signed(PC) + signed(ImmJ));
                 MemAccessV := '0';
                 MemWrEnV := '0';
+                InterlockV := '0';
                 Imm <= IDC_32;
                 SelSrc2 <= '-';
             WHEN opcode_JALR =>
@@ -183,6 +190,7 @@ begin
                 JumpTarget <= IDC_32;
                 MemAccessV := '0';
                 MemWrEnV := '0';
+                InterlockV := '0';
                 Imm <= std_logic_vector(resize(signed(Imm12A), 32));
                 SelSrc2 <= '0'; -- use Imm as B
             WHEN opcode_BRANCH =>
@@ -198,6 +206,7 @@ begin
                 JumpTarget <= std_logic_vector(signed(PC) + signed(ImmB));
                 MemAccessV := '0';
                 MemWrEnV := '0';
+                InterlockV := '0';
                 Imm <= IDC_32;
                 SelSrc2 <= '1';
             WHEN opcode_LOAD =>
@@ -212,6 +221,7 @@ begin
                 JumpTarget <= IDC_32;
                 MemAccessV := '1';
                 MemWrEnV := '0';
+                InterlockV := '1';
                 Imm <= std_logic_vector(resize(signed(Imm12A), 32));
                 SelSrc2 <= '0'; -- use Imm as B
             WHEN opcode_STORE =>
@@ -226,6 +236,7 @@ begin
                 JumpTarget <= IDC_32;
                 MemAccessV := '1';
                 MemWrEnV := '1';
+                InterlockV := '0';
                 ImmS := Inst(31 downto 25) & Inst(11 downto 7);
                 Imm <= std_logic_vector(resize(signed(ImmS), 32));
                 SelSrc2 <= '0'; -- use Imm as B
@@ -241,17 +252,19 @@ begin
                 JumpTarget <= IDC_32;
                 MemAccessV := '0';
                 MemWrEnV := '0';
+                InterlockV := '0';
                 Imm <= IDC_32;
                 SelSrc2 <= '-';
         END CASE;
 
         -- Disable all output if clear is set
-        IF Clear = '1' THEN
+        IF Clear = '1' OR InterlockI = '1' THEN
             DestWrEnV := '0';
             JumpV := '0';
             JumpRelV := '0';
             MemAccessV := '0';
             MemWrEnV := '0';
+            InterlockV := '0';
         END IF;
 
         DestWrEn <= DestWrEnV;
@@ -259,5 +272,6 @@ begin
         JumpRel <= JumpRelV;
         MemAccess <= MemAccessV;
         MemWrEn <= MemWrEnV;
+        InterlockO <= InterlockV;
     END PROCESS;
 end Behavioral;

@@ -53,6 +53,8 @@ begin
         PC <= PCI;
         IF Jump = '1' THEN
             PCNextV := JumpTarget;
+        ELSIF InterlockI = '1' THEN
+            PCNextV := PCI;
         ELSE
             PCNextV := std_logic_vector(unsigned(PCI) + 4);
         END IF;

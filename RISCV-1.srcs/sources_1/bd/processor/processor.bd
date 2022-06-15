@@ -7,15 +7,12 @@
       "name": "processor",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
       "synth_flow_mode": "Hierarchical",
-      "tool_version": "2021.2"
+      "tool_version": "2021.2",
+      "validated": "true"
     },
     "design_tree": {
       "blk_mem_gen_0": "",
       "xlslice_0": "",
-      "DecodeStage_0": "",
-      "Decode_0": "",
-      "FetchStage_0": "",
-      "Fetch_0": "",
       "MUX_0": "",
       "imem_test06mem_0": "",
       "Forward_0": "",
@@ -23,7 +20,11 @@
       "RegisterSet_0": "",
       "ALU_0": "",
       "MemStage_0": "",
-      "ExecuteStage_0": ""
+      "ExecuteStage_0": "",
+      "FetchStage_0": "",
+      "Fetch_0": "",
+      "DecodeStage_0": "",
+      "Decode_0": ""
     },
     "ports": {
       "GCLK": {
@@ -83,240 +84,6 @@
           },
           "DOUT_WIDTH": {
             "value": "10"
-          }
-        }
-      },
-      "DecodeStage_0": {
-        "vlnv": "xilinx.com:module_ref:DecodeStage:1.0",
-        "xci_name": "processor_DecodeStage_0_0",
-        "xci_path": "ip/processor_DecodeStage_0_0/processor_DecodeStage_0_0.xci",
-        "inst_hier_path": "DecodeStage_0",
-        "reference_info": {
-          "ref_type": "hdl",
-          "ref_name": "DecodeStage",
-          "boundary_crc": "0x0"
-        },
-        "ports": {
-          "Clock": {
-            "type": "clk",
-            "direction": "I",
-            "parameters": {
-              "ASSOCIATED_RESET": {
-                "value": "Reset",
-                "value_src": "constant"
-              }
-            }
-          },
-          "Reset": {
-            "type": "rst",
-            "direction": "I"
-          },
-          "InstI": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "InstO": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
-          },
-          "PCI": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "PCO": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
-          },
-          "InterlockI": {
-            "direction": "I"
-          },
-          "InterlockO": {
-            "direction": "O"
-          },
-          "ClearI": {
-            "direction": "I"
-          },
-          "ClearO": {
-            "direction": "O"
-          },
-          "Stall": {
-            "direction": "I"
-          }
-        }
-      },
-      "Decode_0": {
-        "vlnv": "xilinx.com:module_ref:Decode:1.0",
-        "xci_name": "processor_Decode_0_0",
-        "xci_path": "ip/processor_Decode_0_0/processor_Decode_0_0.xci",
-        "inst_hier_path": "Decode_0",
-        "reference_info": {
-          "ref_type": "hdl",
-          "ref_name": "Decode",
-          "boundary_crc": "0x0"
-        },
-        "ports": {
-          "Inst": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "Funct": {
-            "direction": "O",
-            "left": "2",
-            "right": "0"
-          },
-          "SrcRegNo1": {
-            "direction": "O",
-            "left": "4",
-            "right": "0"
-          },
-          "SrcRegNo2": {
-            "direction": "O",
-            "left": "4",
-            "right": "0"
-          },
-          "DestWrEn": {
-            "direction": "O"
-          },
-          "DestRegNo": {
-            "direction": "O",
-            "left": "4",
-            "right": "0"
-          },
-          "Aux": {
-            "direction": "O"
-          },
-          "PC": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "PCNext": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
-          },
-          "Jump": {
-            "direction": "O"
-          },
-          "JumpRel": {
-            "direction": "O"
-          },
-          "JumpTarget": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
-          },
-          "MemAccess": {
-            "direction": "O"
-          },
-          "MemWrEn": {
-            "direction": "O"
-          },
-          "InterlockI": {
-            "direction": "I"
-          },
-          "InterlockO": {
-            "direction": "O"
-          },
-          "Imm": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
-          },
-          "SelSrc2": {
-            "direction": "O"
-          },
-          "Clear": {
-            "direction": "I"
-          }
-        }
-      },
-      "FetchStage_0": {
-        "vlnv": "xilinx.com:module_ref:FetchStage:1.0",
-        "xci_name": "processor_FetchStage_0_0",
-        "xci_path": "ip/processor_FetchStage_0_0/processor_FetchStage_0_0.xci",
-        "inst_hier_path": "FetchStage_0",
-        "reference_info": {
-          "ref_type": "hdl",
-          "ref_name": "FetchStage",
-          "boundary_crc": "0x0"
-        },
-        "ports": {
-          "PCI": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "PCO": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
-          },
-          "Clock": {
-            "type": "clk",
-            "direction": "I",
-            "parameters": {
-              "ASSOCIATED_RESET": {
-                "value": "Reset",
-                "value_src": "constant"
-              }
-            }
-          },
-          "Reset": {
-            "type": "rst",
-            "direction": "I"
-          }
-        }
-      },
-      "Fetch_0": {
-        "vlnv": "xilinx.com:module_ref:Fetch:1.0",
-        "xci_name": "processor_Fetch_0_0",
-        "xci_path": "ip/processor_Fetch_0_0/processor_Fetch_0_0.xci",
-        "inst_hier_path": "Fetch_0",
-        "reference_info": {
-          "ref_type": "hdl",
-          "ref_name": "Fetch",
-          "boundary_crc": "0x0"
-        },
-        "ports": {
-          "PCI": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "Jump": {
-            "direction": "I"
-          },
-          "JumpTarget": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "InterlockI": {
-            "direction": "I"
-          },
-          "Stall": {
-            "direction": "I"
-          },
-          "PCNext": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
-          },
-          "PC": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
-          },
-          "ImemAddr": {
-            "direction": "O",
-            "left": "9",
-            "right": "0"
           }
         }
       },
@@ -883,6 +650,240 @@
             "direction": "I"
           }
         }
+      },
+      "FetchStage_0": {
+        "vlnv": "xilinx.com:module_ref:FetchStage:1.0",
+        "xci_name": "processor_FetchStage_0_0",
+        "xci_path": "ip/processor_FetchStage_0_0/processor_FetchStage_0_0.xci",
+        "inst_hier_path": "FetchStage_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "FetchStage",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "PCI": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "PCO": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "Clock": {
+            "type": "clk",
+            "direction": "I",
+            "parameters": {
+              "ASSOCIATED_RESET": {
+                "value": "Reset",
+                "value_src": "constant"
+              }
+            }
+          },
+          "Reset": {
+            "type": "rst",
+            "direction": "I"
+          }
+        }
+      },
+      "Fetch_0": {
+        "vlnv": "xilinx.com:module_ref:Fetch:1.0",
+        "xci_name": "processor_Fetch_0_0",
+        "xci_path": "ip/processor_Fetch_0_0/processor_Fetch_0_0.xci",
+        "inst_hier_path": "Fetch_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "Fetch",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "PCI": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "Jump": {
+            "direction": "I"
+          },
+          "JumpTarget": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "InterlockI": {
+            "direction": "I"
+          },
+          "Stall": {
+            "direction": "I"
+          },
+          "PCNext": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "PC": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "ImemAddr": {
+            "direction": "O",
+            "left": "9",
+            "right": "0"
+          }
+        }
+      },
+      "DecodeStage_0": {
+        "vlnv": "xilinx.com:module_ref:DecodeStage:1.0",
+        "xci_name": "processor_DecodeStage_0_0",
+        "xci_path": "ip/processor_DecodeStage_0_0/processor_DecodeStage_0_0.xci",
+        "inst_hier_path": "DecodeStage_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "DecodeStage",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "Clock": {
+            "type": "clk",
+            "direction": "I",
+            "parameters": {
+              "ASSOCIATED_RESET": {
+                "value": "Reset",
+                "value_src": "constant"
+              }
+            }
+          },
+          "Reset": {
+            "type": "rst",
+            "direction": "I"
+          },
+          "InstI": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "InstO": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "PCI": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "PCO": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "InterlockI": {
+            "direction": "I"
+          },
+          "InterlockO": {
+            "direction": "O"
+          },
+          "ClearI": {
+            "direction": "I"
+          },
+          "ClearO": {
+            "direction": "O"
+          },
+          "Stall": {
+            "direction": "I"
+          }
+        }
+      },
+      "Decode_0": {
+        "vlnv": "xilinx.com:module_ref:Decode:1.0",
+        "xci_name": "processor_Decode_0_0",
+        "xci_path": "ip/processor_Decode_0_0/processor_Decode_0_0.xci",
+        "inst_hier_path": "Decode_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "Decode",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "Inst": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "Funct": {
+            "direction": "O",
+            "left": "2",
+            "right": "0"
+          },
+          "SrcRegNo1": {
+            "direction": "O",
+            "left": "4",
+            "right": "0"
+          },
+          "SrcRegNo2": {
+            "direction": "O",
+            "left": "4",
+            "right": "0"
+          },
+          "DestWrEn": {
+            "direction": "O"
+          },
+          "DestRegNo": {
+            "direction": "O",
+            "left": "4",
+            "right": "0"
+          },
+          "Aux": {
+            "direction": "O"
+          },
+          "PC": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "PCNext": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "Jump": {
+            "direction": "O"
+          },
+          "JumpRel": {
+            "direction": "O"
+          },
+          "JumpTarget": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "MemAccess": {
+            "direction": "O"
+          },
+          "MemWrEn": {
+            "direction": "O"
+          },
+          "InterlockI": {
+            "direction": "I"
+          },
+          "InterlockO": {
+            "direction": "O"
+          },
+          "Imm": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "SelSrc2": {
+            "direction": "O"
+          },
+          "Clear": {
+            "direction": "I"
+          }
+        }
       }
     },
     "nets": {
@@ -903,9 +904,9 @@
       "ALU_0_JumpO": {
         "ports": [
           "ALU_0/JumpO",
-          "DecodeStage_0/ClearI",
+          "ExecuteStage_0/ClearI",
           "Fetch_0/Jump",
-          "ExecuteStage_0/ClearI"
+          "DecodeStage_0/ClearI"
         ]
       },
       "ALU_0_JumpTargetO": {
@@ -946,11 +947,11 @@
       "BTNL_1": {
         "ports": [
           "BTNL",
-          "DecodeStage_0/Reset",
-          "FetchStage_0/Reset",
           "RegisterSet_0/Reset",
           "MemStage_0/Reset",
-          "ExecuteStage_0/Reset"
+          "ExecuteStage_0/Reset",
+          "FetchStage_0/Reset",
+          "DecodeStage_0/Reset"
         ],
         "hdl_attributes": {
           "DEBUG": {
@@ -1013,6 +1014,13 @@
         "ports": [
           "Decode_0/Imm",
           "ExecuteStage_0/ImmI"
+        ]
+      },
+      "Decode_0_InterlockO": {
+        "ports": [
+          "Decode_0/InterlockO",
+          "Fetch_0/InterlockI",
+          "DecodeStage_0/InterlockI"
         ]
       },
       "Decode_0_Jump": {
@@ -1202,12 +1210,12 @@
         "ports": [
           "GCLK",
           "blk_mem_gen_0/clka",
-          "DecodeStage_0/Clock",
-          "FetchStage_0/Clock",
           "imem_test06mem_0/Clock",
           "RegisterSet_0/Clock",
           "MemStage_0/Clock",
-          "ExecuteStage_0/Clock"
+          "ExecuteStage_0/Clock",
+          "FetchStage_0/Clock",
+          "DecodeStage_0/Clock"
         ]
       },
       "MUX_0_O": {
