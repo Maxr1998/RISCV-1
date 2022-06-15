@@ -20,11 +20,11 @@
       "FetchStage_0": "",
       "Fetch_0": "",
       "MUX_0": "",
-      "RegisterSet_0": "",
       "imem_test06mem_0": "",
       "MemStage_0": "",
+      "Forward_0": "",
       "MemMux_0": "",
-      "Forward_0": ""
+      "RegisterSet_0": ""
     },
     "ports": {
       "GCLK": {
@@ -606,66 +606,6 @@
           }
         }
       },
-      "RegisterSet_0": {
-        "vlnv": "xilinx.com:module_ref:RegisterSet:1.0",
-        "xci_name": "processor_RegisterSet_0_0",
-        "xci_path": "ip/processor_RegisterSet_0_0/processor_RegisterSet_0_0.xci",
-        "inst_hier_path": "RegisterSet_0",
-        "reference_info": {
-          "ref_type": "hdl",
-          "ref_name": "RegisterSet",
-          "boundary_crc": "0x0"
-        },
-        "ports": {
-          "RdRegNo1": {
-            "direction": "I",
-            "left": "4",
-            "right": "0"
-          },
-          "RdRegNo2": {
-            "direction": "I",
-            "left": "4",
-            "right": "0"
-          },
-          "WrEn": {
-            "direction": "I"
-          },
-          "WrRegNo": {
-            "direction": "I",
-            "left": "4",
-            "right": "0"
-          },
-          "WrData": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "RdData1": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
-          },
-          "RdData2": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
-          },
-          "Clock": {
-            "type": "clk",
-            "direction": "I",
-            "parameters": {
-              "ASSOCIATED_RESET": {
-                "value": "Reset",
-                "value_src": "constant"
-              }
-            }
-          },
-          "Reset": {
-            "type": "rst",
-            "direction": "I"
-          }
-        }
-      },
       "imem_test06mem_0": {
         "vlnv": "xilinx.com:module_ref:imem_test06mem:1.0",
         "xci_name": "processor_imem_test06mem_0_0",
@@ -780,42 +720,6 @@
           }
         }
       },
-      "MemMux_0": {
-        "vlnv": "xilinx.com:module_ref:MemMux:1.0",
-        "xci_name": "processor_MemMux_0_0",
-        "xci_path": "ip/processor_MemMux_0_0/processor_MemMux_0_0.xci",
-        "inst_hier_path": "MemMux_0",
-        "reference_info": {
-          "ref_type": "hdl",
-          "ref_name": "MemMux",
-          "boundary_crc": "0x0"
-        },
-        "ports": {
-          "ALUDataIn": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "MemoryDataIn": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "Sel": {
-            "direction": "I"
-          },
-          "FunctI": {
-            "direction": "I",
-            "left": "2",
-            "right": "0"
-          },
-          "WrData": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
-          }
-        }
-      },
       "Forward_0": {
         "vlnv": "xilinx.com:module_ref:Forward:1.0",
         "xci_name": "processor_Forward_0_0",
@@ -884,6 +788,102 @@
             "right": "0"
           }
         }
+      },
+      "MemMux_0": {
+        "vlnv": "xilinx.com:module_ref:MemMux:1.0",
+        "xci_name": "processor_MemMux_0_0",
+        "xci_path": "ip/processor_MemMux_0_0/processor_MemMux_0_0.xci",
+        "inst_hier_path": "MemMux_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "MemMux",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "ALUDataIn": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "MemoryDataIn": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "Sel": {
+            "direction": "I"
+          },
+          "FunctI": {
+            "direction": "I",
+            "left": "2",
+            "right": "0"
+          },
+          "WrData": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          }
+        }
+      },
+      "RegisterSet_0": {
+        "vlnv": "xilinx.com:module_ref:RegisterSet:1.0",
+        "xci_name": "processor_RegisterSet_0_0",
+        "xci_path": "ip/processor_RegisterSet_0_0/processor_RegisterSet_0_0.xci",
+        "inst_hier_path": "RegisterSet_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "RegisterSet",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "RdRegNo1": {
+            "direction": "I",
+            "left": "4",
+            "right": "0"
+          },
+          "RdRegNo2": {
+            "direction": "I",
+            "left": "4",
+            "right": "0"
+          },
+          "WrEn": {
+            "direction": "I"
+          },
+          "WrRegNo": {
+            "direction": "I",
+            "left": "4",
+            "right": "0"
+          },
+          "WrData": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "RdData1": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "RdData2": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "Clock": {
+            "type": "clk",
+            "direction": "I",
+            "parameters": {
+              "ASSOCIATED_RESET": {
+                "value": "Reset",
+                "value_src": "constant"
+              }
+            }
+          },
+          "Reset": {
+            "type": "rst",
+            "direction": "I"
+          }
+        }
       }
     },
     "nets": {
@@ -950,8 +950,8 @@
           "DecodeStage_0/Reset",
           "ExecuteStage_0/Reset",
           "FetchStage_0/Reset",
-          "RegisterSet_0/Reset",
-          "MemStage_0/Reset"
+          "MemStage_0/Reset",
+          "RegisterSet_0/Reset"
         ],
         "hdl_attributes": {
           "DEBUG": {
@@ -1061,15 +1061,15 @@
       "Decode_0_SrcRegNo1": {
         "ports": [
           "Decode_0/SrcRegNo1",
-          "RegisterSet_0/RdRegNo1",
-          "Forward_0/SrcRegNo1"
+          "Forward_0/SrcRegNo1",
+          "RegisterSet_0/RdRegNo1"
         ]
       },
       "Decode_0_SrcRegNo2": {
         "ports": [
           "Decode_0/SrcRegNo2",
-          "RegisterSet_0/RdRegNo2",
-          "Forward_0/SrcRegNo2"
+          "Forward_0/SrcRegNo2",
+          "RegisterSet_0/RdRegNo2"
         ]
       },
       "ExecuteStage_0_AuxO": {
@@ -1206,9 +1206,9 @@
           "DecodeStage_0/Clock",
           "ExecuteStage_0/Clock",
           "FetchStage_0/Clock",
-          "RegisterSet_0/Clock",
           "imem_test06mem_0/Clock",
-          "MemStage_0/Clock"
+          "MemStage_0/Clock",
+          "RegisterSet_0/Clock"
         ]
       },
       "MUX_0_O": {
@@ -1220,6 +1220,7 @@
       "MemMux_0_WrData": {
         "ports": [
           "MemMux_0/WrData",
+          "Forward_0/DestData_MEM",
           "RegisterSet_0/WrData"
         ]
       },
@@ -1232,15 +1233,15 @@
       "MemStage_0_DestRegNoO": {
         "ports": [
           "MemStage_0/DestRegNoO",
-          "RegisterSet_0/WrRegNo",
-          "Forward_0/DestRegNo_MEM"
+          "Forward_0/DestRegNo_MEM",
+          "RegisterSet_0/WrRegNo"
         ]
       },
       "MemStage_0_DestWrEnO": {
         "ports": [
           "MemStage_0/DestWrEnO",
-          "RegisterSet_0/WrEn",
-          "Forward_0/DestWrEn_MEM"
+          "Forward_0/DestWrEn_MEM",
+          "RegisterSet_0/WrEn"
         ]
       },
       "MemStage_0_FunctO": {
