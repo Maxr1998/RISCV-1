@@ -12,15 +12,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="212.157 ns"></ZoomEndTime>
-      <Cursor1Time time="70.000 ns"></Cursor1Time>
+      <ZoomStartTime time="86.260 ns"></ZoomStartTime>
+      <ZoomEndTime time="213.361 ns"></ZoomEndTime>
+      <Cursor1Time time="120.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="209"></NameColumnWidth>
-      <ValueColumnWidth column_width="93"></ValueColumnWidth>
+      <ValueColumnWidth column_width="89"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="19" />
+   <WVObjectSize size="22" />
    <wvobject type="logic" fp_name="/test_processor/Reset">
       <obj_property name="ElementShortName">Reset</obj_property>
       <obj_property name="ObjectShortName">Reset</obj_property>
@@ -46,18 +46,6 @@
       <obj_property name="ElementShortName">RdRegNo2[4:0]</obj_property>
       <obj_property name="ObjectShortName">RdRegNo2[4:0]</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/test_processor/DUT/RegisterSet_0/U0/WrEn">
-      <obj_property name="ElementShortName">WrEn</obj_property>
-      <obj_property name="ObjectShortName">WrEn</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/test_processor/DUT/RegisterSet_0/WrRegNo">
-      <obj_property name="ElementShortName">WrRegNo[4:0]</obj_property>
-      <obj_property name="ObjectShortName">WrRegNo[4:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/test_processor/DUT/RegisterSet_0/U0/WrData">
-      <obj_property name="ElementShortName">WrData[31:0]</obj_property>
-      <obj_property name="ObjectShortName">WrData[31:0]</obj_property>
-   </wvobject>
    <wvobject type="array" fp_name="/test_processor/DUT/ALU_0/X">
       <obj_property name="ElementShortName">X[31:0]</obj_property>
       <obj_property name="ObjectShortName">X[31:0]</obj_property>
@@ -82,9 +70,26 @@
       <obj_property name="ElementShortName">DestWrEnO</obj_property>
       <obj_property name="ObjectShortName">DestWrEnO</obj_property>
    </wvobject>
+   <wvobject type="logic" fp_name="/test_processor/DUT/RegisterSet_0/U0/WrEn">
+      <obj_property name="ElementShortName">WrEn</obj_property>
+      <obj_property name="ObjectShortName">WrEn</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/test_processor/DUT/RegisterSet_0/WrRegNo">
+      <obj_property name="ElementShortName">WrRegNo[4:0]</obj_property>
+      <obj_property name="ObjectShortName">WrRegNo[4:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/test_processor/DUT/RegisterSet_0/U0/WrData">
+      <obj_property name="ElementShortName">WrData[31:0]</obj_property>
+      <obj_property name="ObjectShortName">WrData[31:0]</obj_property>
+   </wvobject>
    <wvobject type="array" fp_name="/test_processor/DUT/RegisterSet_0/U0/Registers">
       <obj_property name="ElementShortName">Registers[0:31][31:0]</obj_property>
       <obj_property name="ObjectShortName">Registers[0:31][31:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/test_processor/DUT/blk_mem_gen_0/ena">
+      <obj_property name="ElementShortName">ena</obj_property>
+      <obj_property name="ObjectShortName">ena</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/test_processor/DUT/blk_mem_gen_0/wea">
       <obj_property name="ElementShortName">wea[3:0]</obj_property>
@@ -97,5 +102,13 @@
    <wvobject type="array" fp_name="/test_processor/DUT/blk_mem_gen_0/dina">
       <obj_property name="ElementShortName">dina[31:0]</obj_property>
       <obj_property name="ObjectShortName">dina[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/test_processor/DUT/blk_mem_gen_0/douta">
+      <obj_property name="ElementShortName">douta[31:0]</obj_property>
+      <obj_property name="ObjectShortName">douta[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/test_processor/DUT/MemStage_0/MemAccessO">
+      <obj_property name="ElementShortName">MemAccessO</obj_property>
+      <obj_property name="ObjectShortName">MemAccessO</obj_property>
    </wvobject>
 </wave_config>
