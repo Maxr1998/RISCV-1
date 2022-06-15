@@ -1,0 +1,15 @@
+# Generated files and cache
+/*.cache/
+/*.gen/
+/*.hw/
+/*.ip_user_files/
+/*.runs/
+/*.sim/
+
+# Generated block design files
+/*.srcs/sources_[0-9]/bd/*/ip/
+
+# UI preview for block designs
+/*.srcs/sources_[0-9]/bd/*/ui/
+
+*.xpr

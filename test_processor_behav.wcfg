@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="test_processor_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="constants" />
+            <top_module name="glbl" />
+            <top_module name="test_processor" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="212.157 ns"></ZoomEndTime>
+      <Cursor1Time time="70.000 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="209"></NameColumnWidth>
+      <ValueColumnWidth column_width="93"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="19" />
+   <wvobject type="logic" fp_name="/test_processor/Reset">
+      <obj_property name="ElementShortName">Reset</obj_property>
+      <obj_property name="ObjectShortName">Reset</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/test_processor/Clock">
+      <obj_property name="ElementShortName">Clock</obj_property>
+      <obj_property name="ObjectShortName">Clock</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/test_processor/DUT/Fetch_0/PC">
+      <obj_property name="ElementShortName">PC[31:0]</obj_property>
+      <obj_property name="ObjectShortName">PC[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/test_processor/DUT/Decode_0/Inst">
+      <obj_property name="ElementShortName">Inst[31:0]</obj_property>
+      <obj_property name="ObjectShortName">Inst[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/test_processor/DUT/RegisterSet_0/U0/RdRegNo1">
+      <obj_property name="ElementShortName">RdRegNo1[4:0]</obj_property>
+      <obj_property name="ObjectShortName">RdRegNo1[4:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/test_processor/DUT/RegisterSet_0/U0/RdRegNo2">
+      <obj_property name="ElementShortName">RdRegNo2[4:0]</obj_property>
+      <obj_property name="ObjectShortName">RdRegNo2[4:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/test_processor/DUT/RegisterSet_0/U0/WrEn">
+      <obj_property name="ElementShortName">WrEn</obj_property>
+      <obj_property name="ObjectShortName">WrEn</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/test_processor/DUT/RegisterSet_0/WrRegNo">
+      <obj_property name="ElementShortName">WrRegNo[4:0]</obj_property>
+      <obj_property name="ObjectShortName">WrRegNo[4:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/test_processor/DUT/RegisterSet_0/U0/WrData">
+      <obj_property name="ElementShortName">WrData[31:0]</obj_property>
+      <obj_property name="ObjectShortName">WrData[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/test_processor/DUT/ALU_0/X">
+      <obj_property name="ElementShortName">X[31:0]</obj_property>
+      <obj_property name="ObjectShortName">X[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/test_processor/DUT/Decode_0/U0/Jump">
+      <obj_property name="ElementShortName">Jump</obj_property>
+      <obj_property name="ObjectShortName">Jump</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/test_processor/DUT/ALU_0/JumpRel">
+      <obj_property name="ElementShortName">JumpRel</obj_property>
+      <obj_property name="ObjectShortName">JumpRel</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/test_processor/DUT/ALU_0/JumpO">
+      <obj_property name="ElementShortName">JumpO</obj_property>
+      <obj_property name="ObjectShortName">JumpO</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/test_processor/DUT/ALU_0/Aux">
+      <obj_property name="ElementShortName">Aux</obj_property>
+      <obj_property name="ObjectShortName">Aux</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/test_processor/DUT/ALU_0/DestWrEnO">
+      <obj_property name="ElementShortName">DestWrEnO</obj_property>
+      <obj_property name="ObjectShortName">DestWrEnO</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/test_processor/DUT/RegisterSet_0/U0/Registers">
+      <obj_property name="ElementShortName">Registers[0:31][31:0]</obj_property>
+      <obj_property name="ObjectShortName">Registers[0:31][31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/test_processor/DUT/blk_mem_gen_0/wea">
+      <obj_property name="ElementShortName">wea[3:0]</obj_property>
+      <obj_property name="ObjectShortName">wea[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/test_processor/DUT/blk_mem_gen_0/addra">
+      <obj_property name="ElementShortName">addra[9:0]</obj_property>
+      <obj_property name="ObjectShortName">addra[9:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/test_processor/DUT/blk_mem_gen_0/dina">
+      <obj_property name="ElementShortName">dina[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dina[31:0]</obj_property>
+   </wvobject>
+</wave_config>
