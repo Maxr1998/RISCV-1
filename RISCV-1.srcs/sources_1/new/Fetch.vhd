@@ -51,7 +51,9 @@ begin
         VARIABLE PCNextV : STD_LOGIC_VECTOR (31 downto 0);
     BEGIN
         PC <= PCI;
-        IF Jump = '1' THEN
+        IF Stall = '1' THEN
+            PCNextV := PCI;
+        ELSIF Jump = '1' THEN
             PCNextV := JumpTarget;
         ELSIF InterlockI = '1' THEN
             PCNextV := PCI;

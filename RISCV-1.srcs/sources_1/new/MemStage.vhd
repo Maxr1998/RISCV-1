@@ -46,9 +46,17 @@ entity MemStage is
         MemWrData   : in  STD_LOGIC_VECTOR (31 downto 0);
         MemRdData   : out STD_LOGIC_VECTOR (31 downto 0);
         MemByteEna  : in  STD_LOGIC_VECTOR ( 3 downto 0);
+        RamReadEn   : out STD_LOGIC;
+        RamWriteEn  : out STD_LOGIC;
+        RamByteEna  : out STD_LOGIC_VECTOR ( 3 downto 0);
+        RamAddress  : out STD_LOGIC_VECTOR (31 downto 0);
+        RamRdData   : in  STD_LOGIC_VECTOR (31 downto 0);
+        RamWrData   : out STD_LOGIC_VECTOR (31 downto 0);
+        RamBusy     : in  STD_LOGIC;
         FunctI      : in  STD_LOGIC_VECTOR ( 2 downto 0);
         FunctO      : out STD_LOGIC_VECTOR ( 2 downto 0);
-        Stall       : in  STD_LOGIC
+        Stall       : in  STD_LOGIC;
+        StallO      : out STD_LOGIC
     );
 end MemStage;
 
@@ -63,14 +71,21 @@ begin
             DestRegNoO <= "00000";
             MemAccessO <= '0';
             MemRdData <= x"00000000";
+            RamReadEn <= '0';
+            RamWriteEn <= '0';
             FunctO <= "000";
+            StallO <= '0';
         ELSIF RISING_EDGE(Clock) THEN
-            DestDataO <= DestDataI;
-            DestWrEnO <= DestWrEnI;
-            DestRegNoO <= DestRegNoI;
-            MemAccessO <= MemAccessI;
-            MemRdData <= MemWrData;
-            FunctO <= FunctI;
+            IF Stall = '0' THEN
+                DestDataO <= DestDataI;
+                DestWrEnO <= DestWrEnI;
+                DestRegNoO <= DestRegNoI;
+                MemAccessO <= MemAccessI;
+                MemRdData <= MemWrData;
+                RamReadEn <= '0';  -- TODO: changeme
+                RamWriteEn <= '0'; -- TODO: changeme
+                FunctO <= FunctI;
+            END IF;
         END IF;
     END PROCESS;
 end Behavioral;

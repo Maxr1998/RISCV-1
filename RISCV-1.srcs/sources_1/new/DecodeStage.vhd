@@ -58,10 +58,12 @@ begin
             InterlockO <= '0';
             ClearO <= '0';
         ELSIF RISING_EDGE(Clock) THEN
-            InstO <= InstI;
-            PCO <= PCI;
-            InterlockO <= InterlockI;
-            ClearO <= ClearI;
+            IF Stall = '0' THEN
+                InstO <= InstI;
+                PCO <= PCI;
+                InterlockO <= InterlockI;
+                ClearO <= ClearI;
+            END IF;
         END IF;
     END PROCESS;
 end Behavioral;

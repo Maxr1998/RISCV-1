@@ -91,21 +91,23 @@ begin
             ImmO <= x"00000000";
             SelSrc2O <= '0';
         ELSIF RISING_EDGE(Clock) THEN
-            FunctO <= FunctI;
-            SrcData1O <= SrcData1I;
-            SrcData2O <= SrcData2I;
-            DestWrEnO <= DestWrEnI;
-            DestRegNoO <= DestRegNoI;
-            AuxO <= AuxI;
-            PCNextO <= PCNextI;
-            JumpO <= JumpI;
-            JumpRelO <= JumpRelI;
-            JumpTargetO <= JumpTargetI;
-            MemAccessO <= MemAccessI;
-            MemWrEnO <= MemWrEnI;
-            ClearO <= ClearI;
-            ImmO <= ImmI;
-            SelSrc2O <= SelSrc2I;
+            IF Stall = '0' THEN
+                FunctO <= FunctI;
+                SrcData1O <= SrcData1I;
+                SrcData2O <= SrcData2I;
+                DestWrEnO <= DestWrEnI;
+                DestRegNoO <= DestRegNoI;
+                AuxO <= AuxI;
+                PCNextO <= PCNextI;
+                JumpO <= JumpI;
+                JumpRelO <= JumpRelI;
+                JumpTargetO <= JumpTargetI;
+                MemAccessO <= MemAccessI;
+                MemWrEnO <= MemWrEnI;
+                ClearO <= ClearI;
+                ImmO <= ImmI;
+                SelSrc2O <= SelSrc2I;
+            END IF;
         END IF;
     END PROCESS;
 end Behavioral;

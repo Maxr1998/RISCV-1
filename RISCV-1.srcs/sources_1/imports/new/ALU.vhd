@@ -49,7 +49,6 @@ entity ALU is
         DestRegNoI  : in  STD_LOGIC_VECTOR (4 downto 0);
         DestWrEnI   : in  STD_LOGIC;
         Clear       : in  STD_LOGIC;
-        Stall       : in  STD_LOGIC;
         X           : out STD_LOGIC_VECTOR (31 downto 0);
         JumpO       : out STD_LOGIC;
         JumpTargetO : out STD_LOGIC_VECTOR (31 downto 0);
@@ -77,7 +76,7 @@ begin
     DestRegNoO <= DestRegNoI;
     FunctO <= Funct;
 
-    PROCESS(A, B, Funct, Aux, PCNext, JumpI, JumpRel, JumpTargetI, MemAccessI, MemWrEn, SrcData2, DestRegNoI, DestWrEnI, Clear, Stall)
+    PROCESS(A, B, Funct, Aux, PCNext, JumpI, JumpRel, JumpTargetI, MemAccessI, MemWrEn, SrcData2, DestRegNoI, DestWrEnI, Clear)
         VARIABLE Result        : STD_LOGIC_VECTOR (31 downto 0);
         VARIABLE MemByteEnMask : STD_LOGIC_VECTOR ( 3 downto 0);
     BEGIN
