@@ -12,15 +12,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="456.333 ns"></ZoomStartTime>
-      <ZoomEndTime time="523.734 ns"></ZoomEndTime>
-      <Cursor1Time time="500.000 ns"></Cursor1Time>
+      <ZoomStartTime time="432.773 ns"></ZoomStartTime>
+      <ZoomEndTime time="596.141 ns"></ZoomEndTime>
+      <Cursor1Time time="460.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="222"></NameColumnWidth>
-      <ValueColumnWidth column_width="103"></ValueColumnWidth>
+      <ValueColumnWidth column_width="95"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="37" />
+   <WVObjectSize size="33" />
    <wvobject type="logic" fp_name="/test_processor/Reset">
       <obj_property name="ElementShortName">Reset</obj_property>
       <obj_property name="ObjectShortName">Reset</obj_property>
@@ -82,14 +82,6 @@
       <obj_property name="ElementShortName">ClearO</obj_property>
       <obj_property name="ObjectShortName">ClearO</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/test_processor/DUT/ALU_0/MemAccessI">
-      <obj_property name="ElementShortName">MemAccessI</obj_property>
-      <obj_property name="ObjectShortName">MemAccessI</obj_property>
-   </wvobject>
-   <wvobject type="logic" fp_name="/test_processor/DUT/ALU_0/MemAccessO">
-      <obj_property name="ElementShortName">MemAccessO</obj_property>
-      <obj_property name="ObjectShortName">MemAccessO</obj_property>
-   </wvobject>
    <wvobject type="logic" fp_name="/test_processor/DUT/Decode_0/U0/Jump">
       <obj_property name="ElementShortName">Jump</obj_property>
       <obj_property name="ObjectShortName">Jump</obj_property>
@@ -125,7 +117,6 @@
    <wvobject type="array" fp_name="/test_processor/DUT/RegisterSet_0/U0/Registers">
       <obj_property name="ElementShortName">Registers[0:31][31:0]</obj_property>
       <obj_property name="ObjectShortName">Registers[0:31][31:0]</obj_property>
-      <obj_property name="isExpanded"></obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/test_processor/DUT/blk_mem_gen_0/ena">
       <obj_property name="ElementShortName">ena</obj_property>
@@ -161,16 +152,8 @@
       <obj_property name="ElementShortName">MemAccessO</obj_property>
       <obj_property name="ObjectShortName">MemAccessO</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/test_processor/DUT/Fetch_0/U0/InterlockI">
-      <obj_property name="ElementShortName">InterlockI</obj_property>
-      <obj_property name="ObjectShortName">InterlockI</obj_property>
-   </wvobject>
-   <wvobject type="logic" fp_name="/test_processor/DUT/Decode_0/InterlockI">
-      <obj_property name="ElementShortName">InterlockI</obj_property>
-      <obj_property name="ObjectShortName">InterlockI</obj_property>
-   </wvobject>
-   <wvobject type="logic" fp_name="/test_processor/DUT/Decode_0/InterlockO">
-      <obj_property name="ElementShortName">InterlockO</obj_property>
-      <obj_property name="ObjectShortName">InterlockO</obj_property>
+   <wvobject type="logic" fp_name="/test_processor/DUT/MemStage_0/StallO">
+      <obj_property name="ElementShortName">StallO</obj_property>
+      <obj_property name="ObjectShortName">StallO</obj_property>
    </wvobject>
 </wave_config>
