@@ -61,7 +61,7 @@ entity MemStage is
 end MemStage;
 
 architecture Behavioral of MemStage is
-    type state_type is (Idle, Stalled);
+    type state_type is (Idle, Read, Write);
     signal CurrentState: state_type;
 begin
     PROCESS (Clock, Reset)
@@ -80,22 +80,49 @@ begin
         ELSIF RISING_EDGE(Clock) THEN
             CASE CurrentState IS
                 WHEN Idle =>
+                    MemRdData <= x"00000000";
                     IF MemAccessI = '1' THEN
+                        RamAddress <= DestDataI(31 downto 2) & "00";
+
+                        IF MemByteEna = "0000" THEN
+                            -- Read access
+                            RamReadEn <= '1';
+                            RamWriteEn <= '0';
+                            CurrentState <= Read;
+                        ELSE
+                            -- Write access
+                            RamReadEn <= '0';
+                            RamWriteEn <= '1';
+                            RamByteEna <= MemByteEna;
+                            RamWrData <= MemWrData;
+                            CurrentState <= Write;
+                        END IF;
+
                         StallO <= '1';
-                        CurrentState <= Stalled;
                     END IF;
-                WHEN Stalled =>
-                    StallO <= '0';
-                    CurrentState <= Idle;
+                WHEN Read =>
+                    RamReadEn <= '0';
+                    IF RamBusy = '0' THEN
+                        MemRdData <= RamRdData;
+                        StallO <= '0';
+                        CurrentState <= Idle;
+                    ELSE
+                        MemRdData <= x"00000000";
+                    END IF;
+                WHEN Write =>
+                    MemRdData <= x"00000000";
+                    RamWriteEn <= '0';
+                    IF RamBusy = '0' THEN
+                        StallO <= '0';
+                        CurrentState <= Idle;
+                    END IF;
             END CASE;
+
             IF Stall = '0' THEN
                 DestDataO <= DestDataI;
                 DestWrEnO <= DestWrEnI;
                 DestRegNoO <= DestRegNoI;
                 MemAccessO <= MemAccessI;
-                MemRdData <= MemWrData;
-                RamReadEn <= '0';  -- TODO: changeme
-                RamWriteEn <= '0'; -- TODO: changeme
                 FunctO <= FunctI;
             END IF;
         END IF;
