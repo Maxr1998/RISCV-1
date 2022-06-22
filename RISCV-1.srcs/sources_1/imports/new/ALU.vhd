@@ -57,7 +57,8 @@ entity ALU is
         DestWrEnO   : out STD_LOGIC;
         MemAccessO  : out STD_LOGIC;
         MemWrData   : out STD_LOGIC_VECTOR (31 downto 0);
-        MemByteEna  : out STD_LOGIC_VECTOR ( 3 downto 0));
+        MemByteEna  : out STD_LOGIC_VECTOR ( 3 downto 0);
+        FunctO      : out STD_LOGIC_VECTOR ( 2 downto 0));
 end ALU;
 
 architecture Behavioral of ALU is
@@ -69,12 +70,16 @@ architecture Behavioral of ALU is
             RETURN '0';
         END IF;
     END FUNCTION;
+
+    alias SrcData2B : STD_LOGIC_VECTOR (  7 downto 0) is SrcData2( 7 downto 0);
+    alias SrcData2H : STD_LOGIC_VECTOR ( 15 downto 0) is SrcData2(15 downto 0);
 begin
     DestRegNoO <= DestRegNoI;
-    MemWrData <= SrcData2;
+    FunctO <= Funct;
 
-    PROCESS(Funct, A, B, Aux, PCNext, JumpI, JumpRel, JumpTargetI)
-        VARIABLE Result : STD_LOGIC_VECTOR (31 downto 0);
+    PROCESS(A, B, Funct, Aux, PCNext, JumpI, JumpRel, JumpTargetI, MemAccessI, MemWrEn, SrcData2, DestRegNoI, DestWrEnI, Clear, Stall)
+        VARIABLE Result        : STD_LOGIC_VECTOR (31 downto 0);
+        VARIABLE MemByteEnMask : STD_LOGIC_VECTOR ( 3 downto 0);
     BEGIN
         -- Compute result
         CASE Funct IS
@@ -135,7 +140,28 @@ begin
 
             -- Handle Memory
             IF MemWrEn = '1' THEN
-                MemByteEna <= "1111";
+                CASE Funct IS
+                    WHEN funct_MEM_B => -- SB
+                        MemWrData <= SrcData2B & SrcData2B & SrcData2B & SrcData2B;
+                        MemByteEnMask := "0001";
+                    WHEN funct_MEM_H => -- SH
+                        MemWrData <= SrcData2H & SrcData2H;
+                        MemByteEnMask := "0011";
+                    WHEN funct_MEM_W => -- SW
+                        MemWrData <= SrcData2;
+                        MemByteEnMask := "1111";
+                    WHEN OTHERS =>
+                        MemWrData <= SrcData2; -- for optimization
+                        MemByteEnMask := "1111";
+                END CASE;
+
+                MemByteEna <= std_logic_vector(
+                    shift_left(
+                        unsigned(MemByteEnMask),
+                        -- Shift to specify which bytes are written (only for halfwords and bytes)
+                        to_integer(unsigned(A(1 downto 0)) + unsigned(B(1 downto 0)))
+                    )
+                );
             ELSE
                 MemByteEna <= "0000";
             END IF;
@@ -159,6 +185,7 @@ begin
             JumpO <= '0';
             MemAccessO <= '0';
             MemByteEna <= "0000";
+            MemWrData <= SrcData2; -- doesn't matter
         END IF;
     END PROCESS;
 end Behavioral;

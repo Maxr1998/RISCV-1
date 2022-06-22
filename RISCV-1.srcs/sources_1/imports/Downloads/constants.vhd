@@ -34,5 +34,9 @@ PACKAGE constants IS
   constant funct_SRL      : std_logic_vector(2 downto 0) := "101";
   constant funct_OR       : std_logic_vector(2 downto 0) := "110";
   constant funct_AND      : std_logic_vector(2 downto 0) := "111";
+  
+  constant funct_MEM_B     : std_logic_vector(2 downto 0) := "000";
+  constant funct_MEM_H     : std_logic_vector(2 downto 0) := "001";
+  constant funct_MEM_W     : std_logic_vector(2 downto 0) := "010";
 
 END constants;

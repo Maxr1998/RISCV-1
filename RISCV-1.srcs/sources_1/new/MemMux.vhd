@@ -24,12 +24,14 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx leaf cells in this code.
 --library UNISIM;
 --use UNISIM.VComponents.all;
+
+use work.constants.all;
 
 entity MemMux is
     Port (
@@ -43,5 +45,30 @@ end MemMux;
 
 architecture Behavioral of MemMux is
 begin
-    WrData <= MemoryDataIn WHEN Sel = '1' ELSE ALUDataIn;
+    PROCESS (ALUDataIn, MemoryDataIn, Sel, FunctI)
+        VARIABLE signed : STD_LOGIC;
+        VARIABLE offset : INTEGER;
+        VARIABLE dbyte  : STD_LOGIC_VECTOR( 7 downto 0);
+        VARIABLE dhalf  : STD_LOGIC_VECTOR(15 downto 0);
+    BEGIN
+        IF Sel = '1' THEN
+            signed := not FunctI(2);
+            CASE FunctI and "011" IS
+                WHEN funct_MEM_B =>
+                    offset := to_integer(unsigned(ALUDataIn(1 downto 0) & "000"));
+                    dbyte := MemoryDataIn(offset + 7 downto offset);
+                    WrData <= (31 downto dbyte'length => signed and dbyte(7)) & dbyte;
+                WHEN funct_MEM_H =>
+                    offset := to_integer(unsigned(ALUDataIn(1 downto 0) & "000"));
+                    dhalf := MemoryDataIn(offset + 15 downto offset);
+                    WrData <= (31 downto dhalf'length => signed and dhalf(15)) & dhalf;
+                WHEN funct_MEM_W =>
+                    WrData <= MemoryDataIn;
+                WHEN OTHERS =>
+                    WrData <= MemoryDataIn;
+            END CASE;
+        ELSE
+            WrData <= ALUDataIn;
+        END IF;
+    END PROCESS;
 end Behavioral;
