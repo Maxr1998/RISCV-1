@@ -26,9 +26,9 @@
       "RegisterSet_0": "",
       "Decode_0": "",
       "ExecuteStage_0": "",
-      "ALU_0": "",
       "MemMux_0": "",
       "MemStage_0": "",
+      "ALU_0": "",
       "SevenSeg_0": ""
     },
     "ports": {
@@ -482,7 +482,7 @@
         "inst_hier_path": "IMemory",
         "parameters": {
           "Coe_File": {
-            "value": "../../../../../../../../Downloads/test_files/test10esel.coe"
+            "value": "../../../../../../../../Downloads/test_files/test13cool.coe"
           },
           "Enable_32bit_Address": {
             "value": "false"
@@ -1090,114 +1090,6 @@
           }
         }
       },
-      "ALU_0": {
-        "vlnv": "xilinx.com:module_ref:ALU:1.0",
-        "xci_name": "processor_ALU_0_0",
-        "xci_path": "ip/processor_ALU_0_0/processor_ALU_0_0.xci",
-        "inst_hier_path": "ALU_0",
-        "reference_info": {
-          "ref_type": "hdl",
-          "ref_name": "ALU",
-          "boundary_crc": "0x0"
-        },
-        "ports": {
-          "A": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "B": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "Funct": {
-            "direction": "I",
-            "left": "2",
-            "right": "0"
-          },
-          "Aux": {
-            "direction": "I"
-          },
-          "PCNext": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "JumpI": {
-            "direction": "I"
-          },
-          "JumpRel": {
-            "direction": "I"
-          },
-          "JumpTargetI": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "MemAccessI": {
-            "direction": "I"
-          },
-          "MemWrEn": {
-            "direction": "I"
-          },
-          "SrcData2": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "DestRegNoI": {
-            "direction": "I",
-            "left": "4",
-            "right": "0"
-          },
-          "DestWrEnI": {
-            "direction": "I"
-          },
-          "Clear": {
-            "direction": "I"
-          },
-          "X": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
-          },
-          "JumpO": {
-            "direction": "O"
-          },
-          "JumpTargetO": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
-          },
-          "DestRegNoO": {
-            "direction": "O",
-            "left": "4",
-            "right": "0"
-          },
-          "DestWrEnO": {
-            "direction": "O"
-          },
-          "MemAccessO": {
-            "direction": "O"
-          },
-          "MemWrData": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
-          },
-          "MemByteEna": {
-            "direction": "O",
-            "left": "3",
-            "right": "0"
-          },
-          "FunctO": {
-            "direction": "O",
-            "left": "2",
-            "right": "0"
-          }
-        }
-      },
       "MemMux_0": {
         "vlnv": "xilinx.com:module_ref:MemMux:1.0",
         "xci_name": "processor_MemMux_0_0",
@@ -1355,6 +1247,114 @@
           },
           "StallO": {
             "direction": "O"
+          }
+        }
+      },
+      "ALU_0": {
+        "vlnv": "xilinx.com:module_ref:ALU:1.0",
+        "xci_name": "processor_ALU_0_0",
+        "xci_path": "ip/processor_ALU_0_0/processor_ALU_0_0.xci",
+        "inst_hier_path": "ALU_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "ALU",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "A": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "B": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "Funct": {
+            "direction": "I",
+            "left": "2",
+            "right": "0"
+          },
+          "Aux": {
+            "direction": "I"
+          },
+          "PCNext": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "JumpI": {
+            "direction": "I"
+          },
+          "JumpRel": {
+            "direction": "I"
+          },
+          "JumpTargetI": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "MemAccessI": {
+            "direction": "I"
+          },
+          "MemWrEn": {
+            "direction": "I"
+          },
+          "SrcData2": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "DestRegNoI": {
+            "direction": "I",
+            "left": "4",
+            "right": "0"
+          },
+          "DestWrEnI": {
+            "direction": "I"
+          },
+          "Clear": {
+            "direction": "I"
+          },
+          "X": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "JumpO": {
+            "direction": "O"
+          },
+          "JumpTargetO": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "DestRegNoO": {
+            "direction": "O",
+            "left": "4",
+            "right": "0"
+          },
+          "DestWrEnO": {
+            "direction": "O"
+          },
+          "MemAccessO": {
+            "direction": "O"
+          },
+          "MemWrData": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "MemByteEna": {
+            "direction": "O",
+            "left": "3",
+            "right": "0"
+          },
+          "FunctO": {
+            "direction": "O",
+            "left": "2",
+            "right": "0"
           }
         }
       },
