@@ -12,4 +12,7 @@
 # UI preview for block designs
 /*.srcs/sources_[0-9]/bd/*/ui/
 
+# Design checkpoints
+/*.srcs/utils_[0-9]/**/*.dcp
+
 *.xpr
