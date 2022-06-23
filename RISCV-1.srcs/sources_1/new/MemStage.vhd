@@ -24,7 +24,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx leaf cells in this code.
@@ -83,7 +83,7 @@ begin
             CASE CurrentState IS
                 WHEN Idle =>
                     MemRdData <= x"00000000";
-                    IF MemAccessI = '1' THEN
+                    IF MemAccessI = '1' AND unsigned(DestDataI) >= 4096 THEN
                         RamAddress <= DestDataI(31 downto 2) & "00";
 
                         IF MemByteEna = "0000" THEN

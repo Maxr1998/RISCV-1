@@ -37,6 +37,7 @@ entity MemMux is
     Port (
         ALUDataIn    : in  STD_LOGIC_VECTOR (31 downto 0);
         MemoryDataIn : in  STD_LOGIC_VECTOR (31 downto 0);
+        RomDataIn    : in  STD_LOGIC_VECTOR (31 downto 0);
         Sel          : in  STD_LOGIC;
         FunctI       : in  STD_LOGIC_VECTOR (2 downto 0);
         WrData       : out STD_LOGIC_VECTOR (31 downto 0)
@@ -45,27 +46,33 @@ end MemMux;
 
 architecture Behavioral of MemMux is
 begin
-    PROCESS (ALUDataIn, MemoryDataIn, Sel, FunctI)
+    PROCESS (ALUDataIn, MemoryDataIn, RomDataIn, Sel, FunctI)
         VARIABLE signed : STD_LOGIC;
+        VARIABLE dataIn : STD_LOGIC_VECTOR(31 downto 0);
         VARIABLE offset : INTEGER;
         VARIABLE dbyte  : STD_LOGIC_VECTOR( 7 downto 0);
         VARIABLE dhalf  : STD_LOGIC_VECTOR(15 downto 0);
     BEGIN
         IF Sel = '1' THEN
             signed := not FunctI(2);
+            IF unsigned(AluDataIn) >= 4096 THEN
+                dataIn := MemoryDataIn;
+            ELSE
+                dataIn := RomDataIn;
+            END IF;
             CASE FunctI and "011" IS
                 WHEN funct_MEM_B =>
                     offset := to_integer(unsigned(ALUDataIn(1 downto 0) & "000"));
-                    dbyte := MemoryDataIn(offset + 7 downto offset);
+                    dbyte := dataIn(offset + 7 downto offset);
                     WrData <= (31 downto dbyte'length => signed and dbyte(7)) & dbyte;
                 WHEN funct_MEM_H =>
                     offset := to_integer(unsigned(ALUDataIn(1 downto 0) & "000"));
-                    dhalf := MemoryDataIn(offset + 15 downto offset);
+                    dhalf := dataIn(offset + 15 downto offset);
                     WrData <= (31 downto dhalf'length => signed and dhalf(15)) & dhalf;
                 WHEN funct_MEM_W =>
-                    WrData <= MemoryDataIn;
+                    WrData <= dataIn;
                 WHEN OTHERS =>
-                    WrData <= MemoryDataIn;
+                    WrData <= dataIn;
             END CASE;
         ELSE
             WrData <= ALUDataIn;
