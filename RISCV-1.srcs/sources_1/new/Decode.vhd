@@ -59,7 +59,6 @@ entity Decode is
 end Decode;
 
 architecture Behavioral of Decode is
-    constant IDC_32 : STD_LOGIC_VECTOR (31 downto 0) := "--------------------------------";
     alias OpcodeA   : STD_LOGIC_VECTOR ( 6 downto 0) is Inst(6 downto 0);
     alias RdA       : STD_LOGIC_VECTOR ( 4 downto 0) is Inst(11 downto 7);
     alias FunctA    : STD_LOGIC_VECTOR ( 2 downto 0) is Inst(14 downto 12);

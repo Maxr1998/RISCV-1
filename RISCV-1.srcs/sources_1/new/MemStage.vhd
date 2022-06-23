@@ -31,6 +31,8 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
+use work.constants.all;
+
 entity MemStage is
     Port (
         Clock       : in  STD_LOGIC;
@@ -88,6 +90,8 @@ begin
                             -- Read access
                             RamReadEn <= '1';
                             RamWriteEn <= '0';
+                            RamByteEna <= "----";
+                            RamWrData <= IDC_32;
                             CurrentState <= Read;
                         ELSE
                             -- Write access

@@ -39,4 +39,6 @@ PACKAGE constants IS
   constant funct_MEM_H     : std_logic_vector(2 downto 0) := "001";
   constant funct_MEM_W     : std_logic_vector(2 downto 0) := "010";
 
+  -- Utility constants
+  constant IDC_32 : STD_LOGIC_VECTOR (31 downto 0) := "--------------------------------";
 END constants;
