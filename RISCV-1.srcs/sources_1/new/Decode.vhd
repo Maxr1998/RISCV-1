@@ -54,6 +54,7 @@ entity Decode is
         InterlockO : out STD_LOGIC;
         Imm        : out STD_LOGIC_VECTOR (31 downto 0);
         SelSrc2    : out STD_LOGIC;
+        Set7Seg    : out STD_LOGIC;
         Clear      : in  STD_LOGIC
     );
 end Decode;
@@ -113,6 +114,7 @@ begin
                 InterlockV := '0';
                 Imm <= IDC_32;
                 SelSrc2 <= '1'; -- use SrcRegNo1 as B
+                Set7Seg <= '0';
             WHEN opcode_OP_IMM =>
                 Funct <= FunctA;
                 SrcRegNo1 <= Rs1A;
@@ -131,6 +133,7 @@ begin
                 InterlockV := '0';
                 Imm <= std_logic_vector(resize(signed(Imm12A), 32));
                 SelSrc2 <= '0'; -- use Imm as B
+                Set7Seg <= '0';
             WHEN opcode_LUI =>
                 Funct <= funct_XOR; -- set funct to XOR so that the immediate value is written to the destination
                 SrcRegNo1 <= "00000"; -- set to zero register
@@ -146,6 +149,7 @@ begin
                 InterlockV := '0';
                 Imm <= Imm20A & x"000"; -- pad 20 bit immediate with 12 bits at the end
                 SelSrc2 <= '0'; -- use Imm as B
+                Set7Seg <= '0';
             WHEN opcode_AUIPC =>
                 Funct <= funct_XOR; -- set funct to XOR so that the immediate value is written to the destination
                 SrcRegNo1 <= "00000"; -- set to zero register
@@ -161,6 +165,7 @@ begin
                 InterlockV := '0';
                 Imm <= std_logic_vector(signed(PC) + signed(Imm20A & x"000")); -- pad 20 bit immediate with 12 bits at the end
                 SelSrc2 <= '0'; -- use Imm as B
+                Set7Seg <= '0';
             WHEN opcode_JAL =>
                 Funct <= "---";
                 SrcRegNo1 <= "-----";
@@ -177,6 +182,7 @@ begin
                 InterlockV := '0';
                 Imm <= IDC_32;
                 SelSrc2 <= '-';
+                Set7Seg <= '0';
             WHEN opcode_JALR =>
                 Funct <= FunctA;
                 SrcRegNo1 <= Rs1A;
@@ -192,6 +198,7 @@ begin
                 InterlockV := '0';
                 Imm <= std_logic_vector(resize(signed(Imm12A), 32));
                 SelSrc2 <= '0'; -- use Imm as B
+                Set7Seg <= '0';
             WHEN opcode_BRANCH =>
                 Funct <= FunctA;
                 SrcRegNo1 <= Rs1A;
@@ -208,6 +215,7 @@ begin
                 InterlockV := '0';
                 Imm <= IDC_32;
                 SelSrc2 <= '1';
+                Set7Seg <= '0';
             WHEN opcode_LOAD =>
                 Funct <= FunctA;
                 SrcRegNo1 <= Rs1A;
@@ -223,6 +231,7 @@ begin
                 InterlockV := '1';
                 Imm <= std_logic_vector(resize(signed(Imm12A), 32));
                 SelSrc2 <= '0'; -- use Imm as B
+                Set7Seg <= '0';
             WHEN opcode_STORE =>
                 Funct <= FunctA;
                 SrcRegNo1 <= Rs1A;
@@ -239,6 +248,28 @@ begin
                 ImmS := Inst(31 downto 25) & Inst(11 downto 7);
                 Imm <= std_logic_vector(resize(signed(ImmS), 32));
                 SelSrc2 <= '0'; -- use Imm as B
+                Set7Seg <= '0';
+            WHEN opcode_SYSTEM =>
+                Funct <= FunctA;
+                SrcRegNo1 <= Rs1A;
+                DestWrEnV := '0';
+
+                Aux <= '-';
+                PCNext <= IDC_32;
+                JumpV := '0';
+                JumpRelV := '0';
+                JumpTarget <= IDC_32;
+                MemAccessV := '0';
+                MemWrEnV := '0';
+                InterlockV := '0';
+                Imm <= IDC_32;
+                SelSrc2 <= '0'; -- use Imm as B
+
+                IF FunctA = funct_CSRRW AND Imm12A = CSR_7_SEG THEN
+                    Set7Seg <= '1';
+                ELSE
+                    Set7Seg <= '0';
+                END IF;
             WHEN OTHERS =>
                 Funct <= "---";
                 SrcRegNo1 <= "-----";
@@ -254,6 +285,7 @@ begin
                 InterlockV := '0';
                 Imm <= IDC_32;
                 SelSrc2 <= '-';
+                Set7Seg <= '0';
         END CASE;
 
         -- Disable all output if clear is set

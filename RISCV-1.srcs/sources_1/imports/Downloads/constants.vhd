@@ -3,7 +3,7 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.all;
 
-PACKAGE constants IS  
+PACKAGE constants IS
 
   constant opcode_LOAD    : std_logic_vector(6 downto 0) := "0000011";
   constant opcode_MISC_MEM: std_logic_vector(6 downto 0) := "0001111";
@@ -34,10 +34,16 @@ PACKAGE constants IS
   constant funct_SRL      : std_logic_vector(2 downto 0) := "101";
   constant funct_OR       : std_logic_vector(2 downto 0) := "110";
   constant funct_AND      : std_logic_vector(2 downto 0) := "111";
+
+  constant funct_CSRRW    : std_logic_vector(2 downto 0) := "001";
+  constant funct_CSRRS    : std_logic_vector(2 downto 0) := "010";
+  constant funct_CSRRC    : std_logic_vector(2 downto 0) := "011";
+
+  constant funct_MEM_B    : std_logic_vector(2 downto 0) := "000";
+  constant funct_MEM_H    : std_logic_vector(2 downto 0) := "001";
+  constant funct_MEM_W    : std_logic_vector(2 downto 0) := "010";
   
-  constant funct_MEM_B     : std_logic_vector(2 downto 0) := "000";
-  constant funct_MEM_H     : std_logic_vector(2 downto 0) := "001";
-  constant funct_MEM_W     : std_logic_vector(2 downto 0) := "010";
+  constant CSR_7_SEG      : std_logic_vector(11 downto 0) := x"788";
 
   -- Utility constants
   constant IDC_32 : STD_LOGIC_VECTOR (31 downto 0) := "--------------------------------";

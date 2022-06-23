@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0x7A857340CB754E7E",
+      "boundary_crc": "0xD721D80E01FC5C4",
       "device": "xc7z020clg484-1",
       "gen_directory": "../../../../RISCV-1.gen/sources_1/bd/processor",
       "name": "processor",
@@ -18,17 +18,18 @@
       },
       "IMemory": "",
       "xlslice_0": "",
-      "ALU_0": "",
       "DecodeStage_0": "",
-      "Decode_0": "",
-      "ExecuteStage_0": "",
       "FetchStage_0": "",
       "Fetch_0": "",
       "Forward_0": "",
       "MUX_0": "",
       "RegisterSet_0": "",
+      "Decode_0": "",
+      "ExecuteStage_0": "",
+      "ALU_0": "",
       "MemMux_0": "",
-      "MemStage_0": ""
+      "MemStage_0": "",
+      "SevenSeg_0": ""
     },
     "ports": {
       "GCLK": {
@@ -36,6 +37,26 @@
       },
       "BTNL": {
         "direction": "I"
+      },
+      "JA": {
+        "direction": "O",
+        "left": "3",
+        "right": "0"
+      },
+      "JB": {
+        "direction": "O",
+        "left": "3",
+        "right": "0"
+      },
+      "JC": {
+        "direction": "O",
+        "left": "3",
+        "right": "0"
+      },
+      "JD": {
+        "direction": "O",
+        "left": "3",
+        "right": "0"
       }
     },
     "components": {
@@ -461,7 +482,7 @@
         "inst_hier_path": "IMemory",
         "parameters": {
           "Coe_File": {
-            "value": "../../../../../../../../Downloads/test_files/test07ram.coe"
+            "value": "../../../../../../../../Downloads/test_files/test10esel.coe"
           },
           "Enable_32bit_Address": {
             "value": "false"
@@ -515,114 +536,6 @@
           },
           "DOUT_WIDTH": {
             "value": "10"
-          }
-        }
-      },
-      "ALU_0": {
-        "vlnv": "xilinx.com:module_ref:ALU:1.0",
-        "xci_name": "processor_ALU_0_0",
-        "xci_path": "ip/processor_ALU_0_0/processor_ALU_0_0.xci",
-        "inst_hier_path": "ALU_0",
-        "reference_info": {
-          "ref_type": "hdl",
-          "ref_name": "ALU",
-          "boundary_crc": "0x0"
-        },
-        "ports": {
-          "A": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "B": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "Funct": {
-            "direction": "I",
-            "left": "2",
-            "right": "0"
-          },
-          "Aux": {
-            "direction": "I"
-          },
-          "PCNext": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "JumpI": {
-            "direction": "I"
-          },
-          "JumpRel": {
-            "direction": "I"
-          },
-          "JumpTargetI": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "MemAccessI": {
-            "direction": "I"
-          },
-          "MemWrEn": {
-            "direction": "I"
-          },
-          "SrcData2": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "DestRegNoI": {
-            "direction": "I",
-            "left": "4",
-            "right": "0"
-          },
-          "DestWrEnI": {
-            "direction": "I"
-          },
-          "Clear": {
-            "direction": "I"
-          },
-          "X": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
-          },
-          "JumpO": {
-            "direction": "O"
-          },
-          "JumpTargetO": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
-          },
-          "DestRegNoO": {
-            "direction": "O",
-            "left": "4",
-            "right": "0"
-          },
-          "DestWrEnO": {
-            "direction": "O"
-          },
-          "MemAccessO": {
-            "direction": "O"
-          },
-          "MemWrData": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
-          },
-          "MemByteEna": {
-            "direction": "O",
-            "left": "3",
-            "right": "0"
-          },
-          "FunctO": {
-            "direction": "O",
-            "left": "2",
-            "right": "0"
           }
         }
       },
@@ -681,242 +594,6 @@
             "direction": "I"
           },
           "ClearO": {
-            "direction": "O"
-          },
-          "Stall": {
-            "direction": "I"
-          }
-        }
-      },
-      "Decode_0": {
-        "vlnv": "xilinx.com:module_ref:Decode:1.0",
-        "xci_name": "processor_Decode_0_0",
-        "xci_path": "ip/processor_Decode_0_0/processor_Decode_0_0.xci",
-        "inst_hier_path": "Decode_0",
-        "reference_info": {
-          "ref_type": "hdl",
-          "ref_name": "Decode",
-          "boundary_crc": "0x0"
-        },
-        "ports": {
-          "Inst": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "Funct": {
-            "direction": "O",
-            "left": "2",
-            "right": "0"
-          },
-          "SrcRegNo1": {
-            "direction": "O",
-            "left": "4",
-            "right": "0"
-          },
-          "SrcRegNo2": {
-            "direction": "O",
-            "left": "4",
-            "right": "0"
-          },
-          "DestWrEn": {
-            "direction": "O"
-          },
-          "DestRegNo": {
-            "direction": "O",
-            "left": "4",
-            "right": "0"
-          },
-          "Aux": {
-            "direction": "O"
-          },
-          "PC": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "PCNext": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
-          },
-          "Jump": {
-            "direction": "O"
-          },
-          "JumpRel": {
-            "direction": "O"
-          },
-          "JumpTarget": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
-          },
-          "MemAccess": {
-            "direction": "O"
-          },
-          "MemWrEn": {
-            "direction": "O"
-          },
-          "InterlockI": {
-            "direction": "I"
-          },
-          "InterlockO": {
-            "direction": "O"
-          },
-          "Imm": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
-          },
-          "SelSrc2": {
-            "direction": "O"
-          },
-          "Clear": {
-            "direction": "I"
-          }
-        }
-      },
-      "ExecuteStage_0": {
-        "vlnv": "xilinx.com:module_ref:ExecuteStage:1.0",
-        "xci_name": "processor_ExecuteStage_0_0",
-        "xci_path": "ip/processor_ExecuteStage_0_0/processor_ExecuteStage_0_0.xci",
-        "inst_hier_path": "ExecuteStage_0",
-        "reference_info": {
-          "ref_type": "hdl",
-          "ref_name": "ExecuteStage",
-          "boundary_crc": "0x0"
-        },
-        "ports": {
-          "Clock": {
-            "type": "clk",
-            "direction": "I",
-            "parameters": {
-              "ASSOCIATED_RESET": {
-                "value": "Reset",
-                "value_src": "constant"
-              }
-            }
-          },
-          "Reset": {
-            "type": "rst",
-            "direction": "I"
-          },
-          "FunctI": {
-            "direction": "I",
-            "left": "2",
-            "right": "0"
-          },
-          "FunctO": {
-            "direction": "O",
-            "left": "2",
-            "right": "0"
-          },
-          "SrcData1I": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "SrcData1O": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
-          },
-          "SrcData2I": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "SrcData2O": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
-          },
-          "DestWrEnI": {
-            "direction": "I"
-          },
-          "DestWrEnO": {
-            "direction": "O"
-          },
-          "DestRegNoI": {
-            "direction": "I",
-            "left": "4",
-            "right": "0"
-          },
-          "DestRegNoO": {
-            "direction": "O",
-            "left": "4",
-            "right": "0"
-          },
-          "AuxI": {
-            "direction": "I"
-          },
-          "AuxO": {
-            "direction": "O"
-          },
-          "PCNextI": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "PCNextO": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
-          },
-          "JumpI": {
-            "direction": "I"
-          },
-          "JumpO": {
-            "direction": "O"
-          },
-          "JumpRelI": {
-            "direction": "I"
-          },
-          "JumpRelO": {
-            "direction": "O"
-          },
-          "JumpTargetI": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "JumpTargetO": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
-          },
-          "MemAccessI": {
-            "direction": "I"
-          },
-          "MemAccessO": {
-            "direction": "O"
-          },
-          "MemWrEnI": {
-            "direction": "I"
-          },
-          "MemWrEnO": {
-            "direction": "O"
-          },
-          "ClearI": {
-            "direction": "I"
-          },
-          "ClearO": {
-            "direction": "O"
-          },
-          "ImmI": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "ImmO": {
-            "direction": "O",
-            "left": "31",
-            "right": "0"
-          },
-          "SelSrc2I": {
-            "direction": "I"
-          },
-          "SelSrc2O": {
             "direction": "O"
           },
           "Stall": {
@@ -1168,6 +845,359 @@
           }
         }
       },
+      "Decode_0": {
+        "vlnv": "xilinx.com:module_ref:Decode:1.0",
+        "xci_name": "processor_Decode_0_0",
+        "xci_path": "ip/processor_Decode_0_0/processor_Decode_0_0.xci",
+        "inst_hier_path": "Decode_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "Decode",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "Inst": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "Funct": {
+            "direction": "O",
+            "left": "2",
+            "right": "0"
+          },
+          "SrcRegNo1": {
+            "direction": "O",
+            "left": "4",
+            "right": "0"
+          },
+          "SrcRegNo2": {
+            "direction": "O",
+            "left": "4",
+            "right": "0"
+          },
+          "DestWrEn": {
+            "direction": "O"
+          },
+          "DestRegNo": {
+            "direction": "O",
+            "left": "4",
+            "right": "0"
+          },
+          "Aux": {
+            "direction": "O"
+          },
+          "PC": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "PCNext": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "Jump": {
+            "direction": "O"
+          },
+          "JumpRel": {
+            "direction": "O"
+          },
+          "JumpTarget": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "MemAccess": {
+            "direction": "O"
+          },
+          "MemWrEn": {
+            "direction": "O"
+          },
+          "InterlockI": {
+            "direction": "I"
+          },
+          "InterlockO": {
+            "direction": "O"
+          },
+          "Imm": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "SelSrc2": {
+            "direction": "O"
+          },
+          "Set7Seg": {
+            "direction": "O"
+          },
+          "Clear": {
+            "direction": "I"
+          }
+        }
+      },
+      "ExecuteStage_0": {
+        "vlnv": "xilinx.com:module_ref:ExecuteStage:1.0",
+        "xci_name": "processor_ExecuteStage_0_0",
+        "xci_path": "ip/processor_ExecuteStage_0_0/processor_ExecuteStage_0_0.xci",
+        "inst_hier_path": "ExecuteStage_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "ExecuteStage",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "Clock": {
+            "type": "clk",
+            "direction": "I",
+            "parameters": {
+              "ASSOCIATED_RESET": {
+                "value": "Reset",
+                "value_src": "constant"
+              }
+            }
+          },
+          "Reset": {
+            "type": "rst",
+            "direction": "I"
+          },
+          "FunctI": {
+            "direction": "I",
+            "left": "2",
+            "right": "0"
+          },
+          "FunctO": {
+            "direction": "O",
+            "left": "2",
+            "right": "0"
+          },
+          "SrcData1I": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "SrcData1O": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "SrcData2I": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "SrcData2O": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "DestWrEnI": {
+            "direction": "I"
+          },
+          "DestWrEnO": {
+            "direction": "O"
+          },
+          "DestRegNoI": {
+            "direction": "I",
+            "left": "4",
+            "right": "0"
+          },
+          "DestRegNoO": {
+            "direction": "O",
+            "left": "4",
+            "right": "0"
+          },
+          "AuxI": {
+            "direction": "I"
+          },
+          "AuxO": {
+            "direction": "O"
+          },
+          "PCNextI": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "PCNextO": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "JumpI": {
+            "direction": "I"
+          },
+          "JumpO": {
+            "direction": "O"
+          },
+          "JumpRelI": {
+            "direction": "I"
+          },
+          "JumpRelO": {
+            "direction": "O"
+          },
+          "JumpTargetI": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "JumpTargetO": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "MemAccessI": {
+            "direction": "I"
+          },
+          "MemAccessO": {
+            "direction": "O"
+          },
+          "MemWrEnI": {
+            "direction": "I"
+          },
+          "MemWrEnO": {
+            "direction": "O"
+          },
+          "ClearI": {
+            "direction": "I"
+          },
+          "ClearO": {
+            "direction": "O"
+          },
+          "ImmI": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "ImmO": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "SelSrc2I": {
+            "direction": "I"
+          },
+          "SelSrc2O": {
+            "direction": "O"
+          },
+          "Set7SegI": {
+            "direction": "I"
+          },
+          "Set7SegO": {
+            "direction": "O"
+          },
+          "Stall": {
+            "direction": "I"
+          }
+        }
+      },
+      "ALU_0": {
+        "vlnv": "xilinx.com:module_ref:ALU:1.0",
+        "xci_name": "processor_ALU_0_0",
+        "xci_path": "ip/processor_ALU_0_0/processor_ALU_0_0.xci",
+        "inst_hier_path": "ALU_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "ALU",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "A": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "B": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "Funct": {
+            "direction": "I",
+            "left": "2",
+            "right": "0"
+          },
+          "Aux": {
+            "direction": "I"
+          },
+          "PCNext": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "JumpI": {
+            "direction": "I"
+          },
+          "JumpRel": {
+            "direction": "I"
+          },
+          "JumpTargetI": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "MemAccessI": {
+            "direction": "I"
+          },
+          "MemWrEn": {
+            "direction": "I"
+          },
+          "SrcData2": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "DestRegNoI": {
+            "direction": "I",
+            "left": "4",
+            "right": "0"
+          },
+          "DestWrEnI": {
+            "direction": "I"
+          },
+          "Clear": {
+            "direction": "I"
+          },
+          "X": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "JumpO": {
+            "direction": "O"
+          },
+          "JumpTargetO": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "DestRegNoO": {
+            "direction": "O",
+            "left": "4",
+            "right": "0"
+          },
+          "DestWrEnO": {
+            "direction": "O"
+          },
+          "MemAccessO": {
+            "direction": "O"
+          },
+          "MemWrData": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "MemByteEna": {
+            "direction": "O",
+            "left": "3",
+            "right": "0"
+          },
+          "FunctO": {
+            "direction": "O",
+            "left": "2",
+            "right": "0"
+          }
+        }
+      },
       "MemMux_0": {
         "vlnv": "xilinx.com:module_ref:MemMux:1.0",
         "xci_name": "processor_MemMux_0_0",
@@ -1327,6 +1357,61 @@
             "direction": "O"
           }
         }
+      },
+      "SevenSeg_0": {
+        "vlnv": "xilinx.com:module_ref:SevenSeg:1.0",
+        "xci_name": "processor_SevenSeg_0_0",
+        "xci_path": "ip/processor_SevenSeg_0_0/processor_SevenSeg_0_0.xci",
+        "inst_hier_path": "SevenSeg_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "SevenSeg",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "Set": {
+            "direction": "I"
+          },
+          "V": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "Clock": {
+            "type": "clk",
+            "direction": "I",
+            "parameters": {
+              "ASSOCIATED_RESET": {
+                "value": "Reset",
+                "value_src": "constant"
+              }
+            }
+          },
+          "Reset": {
+            "type": "rst",
+            "direction": "I"
+          },
+          "Pmod0": {
+            "direction": "O",
+            "left": "3",
+            "right": "0"
+          },
+          "Pmod1": {
+            "direction": "O",
+            "left": "3",
+            "right": "0"
+          },
+          "Pmod2": {
+            "direction": "O",
+            "left": "3",
+            "right": "0"
+          },
+          "Pmod3": {
+            "direction": "O",
+            "left": "3",
+            "right": "0"
+          }
+        }
       }
     },
     "nets": {
@@ -1354,8 +1439,8 @@
         "ports": [
           "ALU_0/JumpO",
           "DecodeStage_0/ClearI",
-          "ExecuteStage_0/ClearI",
-          "Fetch_0/Jump"
+          "Fetch_0/Jump",
+          "ExecuteStage_0/ClearI"
         ]
       },
       "ALU_0_JumpTargetO": {
@@ -1424,10 +1509,11 @@
           "BTNL",
           "ram/BTNL",
           "DecodeStage_0/Reset",
-          "ExecuteStage_0/Reset",
           "FetchStage_0/Reset",
           "RegisterSet_0/Reset",
-          "MemStage_0/Reset"
+          "ExecuteStage_0/Reset",
+          "MemStage_0/Reset",
+          "SevenSeg_0/Reset"
         ],
         "hdl_attributes": {
           "DEBUG": {
@@ -1557,6 +1643,12 @@
           "ExecuteStage_0/SelSrc2I"
         ]
       },
+      "Decode_0_Set7Seg": {
+        "ports": [
+          "Decode_0/Set7Seg",
+          "ExecuteStage_0/Set7SegI"
+        ]
+      },
       "Decode_0_SrcRegNo1": {
         "ports": [
           "Decode_0/SrcRegNo1",
@@ -1673,10 +1765,17 @@
           "MUX_0/Sel"
         ]
       },
+      "ExecuteStage_0_Set7SegO": {
+        "ports": [
+          "ExecuteStage_0/Set7SegO",
+          "SevenSeg_0/Set"
+        ]
+      },
       "ExecuteStage_0_SrcData1O": {
         "ports": [
           "ExecuteStage_0/SrcData1O",
-          "ALU_0/A"
+          "ALU_0/A",
+          "SevenSeg_0/V"
         ],
         "hdl_attributes": {
           "DEBUG": {
@@ -1690,8 +1789,8 @@
       "ExecuteStage_0_SrcData2O": {
         "ports": [
           "ExecuteStage_0/SrcData2O",
-          "ALU_0/SrcData2",
-          "MUX_0/B"
+          "MUX_0/B",
+          "ALU_0/SrcData2"
         ]
       },
       "FetchStage_0_PCO": {
@@ -1737,10 +1836,11 @@
           "IMemory/clka",
           "IMemory/clkb",
           "DecodeStage_0/Clock",
-          "ExecuteStage_0/Clock",
           "FetchStage_0/Clock",
           "RegisterSet_0/Clock",
-          "MemStage_0/Clock"
+          "ExecuteStage_0/Clock",
+          "MemStage_0/Clock",
+          "SevenSeg_0/Clock"
         ]
       },
       "IMemory_douta": {
@@ -1856,8 +1956,8 @@
         "ports": [
           "MemStage_0/StallO",
           "DecodeStage_0/Stall",
-          "ExecuteStage_0/Stall",
           "Fetch_0/Stall",
+          "ExecuteStage_0/Stall",
           "MemStage_0/Stall"
         ]
       },
@@ -1871,6 +1971,30 @@
         "ports": [
           "RegisterSet_0/RdData2",
           "Forward_0/SrcData2"
+        ]
+      },
+      "SevenSeg_0_Pmod0": {
+        "ports": [
+          "SevenSeg_0/Pmod0",
+          "JA"
+        ]
+      },
+      "SevenSeg_0_Pmod1": {
+        "ports": [
+          "SevenSeg_0/Pmod1",
+          "JB"
+        ]
+      },
+      "SevenSeg_0_Pmod2": {
+        "ports": [
+          "SevenSeg_0/Pmod2",
+          "JC"
+        ]
+      },
+      "SevenSeg_0_Pmod3": {
+        "ports": [
+          "SevenSeg_0/Pmod3",
+          "JD"
         ]
       },
       "xlslice_0_Dout": {

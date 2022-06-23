@@ -162,6 +162,7 @@ begin
                     )
                 );
             ELSE
+                MemWrData <= IDC_32;
                 MemByteEna <= "0000";
             END IF;
 

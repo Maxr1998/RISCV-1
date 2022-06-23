@@ -65,6 +65,8 @@ entity ExecuteStage is
         ImmO        : out STD_LOGIC_VECTOR (31 downto 0);
         SelSrc2I    : in  STD_LOGIC;
         SelSrc2O    : out STD_LOGIC;
+        Set7SegI    : in  STD_LOGIC;
+        Set7SegO    : out STD_LOGIC;
         Stall       : in  STD_LOGIC
     );
 end ExecuteStage;
@@ -90,6 +92,7 @@ begin
             ClearO <= '0';
             ImmO <= x"00000000";
             SelSrc2O <= '0';
+            Set7SegO <= '0';
         ELSIF RISING_EDGE(Clock) THEN
             IF Stall = '0' THEN
                 FunctO <= FunctI;
@@ -107,6 +110,7 @@ begin
                 ClearO <= ClearI;
                 ImmO <= ImmI;
                 SelSrc2O <= SelSrc2I;
+                Set7SegO <= Set7SegI;
             END IF;
         END IF;
     END PROCESS;
