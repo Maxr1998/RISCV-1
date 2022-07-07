@@ -38,6 +38,7 @@ entity Fetch is
         JumpTarget : in  STD_LOGIC_VECTOR (31 downto 0);
         InterlockI : in  STD_LOGIC;
         Stall      : in  STD_LOGIC;
+        RepeatInst : in  STD_LOGIC;
         PCNext     : out STD_LOGIC_VECTOR (31 downto 0);
         PC         : out STD_LOGIC_VECTOR (31 downto 0);
         ImemAddr   : out STD_LOGIC_VECTOR (9 downto 0)
@@ -47,7 +48,7 @@ end Fetch;
 architecture Behavioral of Fetch is
 
 begin
-    PROCESS (PCI, Jump, JumpTarget, InterlockI, Stall)
+    PROCESS (PCI, Jump, JumpTarget, InterlockI, Stall, RepeatInst)
         VARIABLE PCNextV : STD_LOGIC_VECTOR (31 downto 0);
     BEGIN
         PC <= PCI;
@@ -55,7 +56,7 @@ begin
             PCNextV := PCI;
         ELSIF Jump = '1' THEN
             PCNextV := JumpTarget;
-        ELSIF InterlockI = '1' THEN
+        ELSIF InterlockI = '1' or RepeatInst = '1' THEN
             PCNextV := PCI;
         ELSE
             PCNextV := std_logic_vector(unsigned(PCI) + 4);
