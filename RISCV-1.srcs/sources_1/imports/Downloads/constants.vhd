@@ -46,5 +46,21 @@ PACKAGE constants IS
   constant CSR_7_SEG      : std_logic_vector(11 downto 0) := x"788";
 
   -- Utility constants
-  constant IDC_32 : STD_LOGIC_VECTOR (31 downto 0) := "--------------------------------";
+  constant INST_NOP       : std_logic_vector(31 downto 0) := x"000" & "00000" & funct_ADD & "00000" & opcode_OP_IMM;
+  constant IDC_32         : std_logic_vector(31 downto 0) := "--------------------------------";
+
+  -- RVC CONSTANTS
+  -- Quadrants
+  constant C0             : std_logic_vector(1 downto 0) := "00";
+  constant C1             : std_logic_vector(1 downto 0) := "01";
+  constant C2             : std_logic_vector(1 downto 0) := "10";
+
+  -- Functs
+  constant funct_CLW      : std_logic_vector(2 downto 0) := "010";
+  constant funct_CSW      : std_logic_vector(2 downto 0) := "110";
+
+  constant funct_CNOP     : std_logic_vector(2 downto 0) := "000";
+  constant funct_CJAL     : std_logic_vector(2 downto 0) := "001";
+  constant funct_CJ       : std_logic_vector(2 downto 0) := "101";
+
 END constants;
