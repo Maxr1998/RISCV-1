@@ -50,7 +50,7 @@ end DecodeStage;
 architecture Behavioral of DecodeStage is
 
 begin
-    PROCESS (Clock, Reset, InstI, PCI, InterlockI, ClearI, Stall)
+    PROCESS (Clock, Reset)
     BEGIN
         IF Reset = '0' THEN
             InstO <= x"00000000";

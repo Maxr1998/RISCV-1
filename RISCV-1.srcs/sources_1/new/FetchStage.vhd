@@ -43,7 +43,7 @@ end FetchStage;
 architecture Behavioral of FetchStage is
 
 begin
-    PROCESS (PCI, Clock, Reset)
+    PROCESS (Clock, Reset)
     BEGIN
         IF Reset = '0' THEN
             PCO <= std_logic_vector(to_signed(-4, 32));
