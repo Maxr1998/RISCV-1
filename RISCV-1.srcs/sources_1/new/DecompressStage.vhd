@@ -90,84 +90,86 @@ begin
             PCO <= x"00000000";
             RepeatInst <= '0';
         ELSIF RISING_EDGE(Clock) THEN
-            -- Check if there's an instruction remaining in buffer after a compressed instruction
-            IF InstBuffer /= x"0000" THEN
-                IF IS_RVC(InstBuffer) THEN
-                    -- Another 16 bit instruction - current InstI will be repeated in next clock 
-                    InstV := x"0000" & InstBuffer;
-                    Decompress := true;
-                    InstBuffer <= x"0000";
-                    RepeatInst <= '0';
-                ELSE
-                    -- 32 bit instruction - combine with low part from next instruction
-                    InstV := InstLow & InstBuffer;
-                    Decompress := false;
-                    InstBuffer <= InstHigh;
-
-                    -- Repeat the following instruction if we are still only processing the current one next clock
-                    IF IS_RVC(InstHigh) THEN
-                        RepeatInst <= '1';
+            IF Stall = '0' THEN
+                -- Check if there's an instruction remaining in buffer after a compressed instruction
+                IF InstBuffer /= x"0000" THEN
+                    IF IS_RVC(InstBuffer) THEN
+                        -- Another 16 bit instruction - current InstI will be repeated in next clock 
+                        InstV := x"0000" & InstBuffer;
+                        Decompress := true;
+                        InstBuffer <= x"0000";
+                        RepeatInst <= '0';
                     ELSE
+                        -- 32 bit instruction - combine with low part from next instruction
+                        InstV := InstLow & InstBuffer;
+                        Decompress := false;
+                        InstBuffer <= InstHigh;
+
+                        -- Repeat the following instruction if we are still only processing the current one next clock
+                        IF IS_RVC(InstHigh) THEN
+                            RepeatInst <= '1';
+                        ELSE
+                            RepeatInst <= '0';
+                        END IF;
+                    END IF;
+                    PCO <= std_logic_vector(unsigned(PCI) - 2);
+                ELSE
+                    IF IS_RVC(InstI) and InstI /= x"00000000" THEN -- all zeros is an illegal instruction, handle in decode
+                        -- Fresh 16 bit instruction
+                        InstV := x"0000" & InstLow;
+                        Decompress := true;
+                        InstBuffer <= InstHigh;
+
+                        -- Repeat the following instruction if we are still only processing the current one next clock
+                        IF IS_RVC(InstHigh) THEN
+                            RepeatInst <= '1';
+                        ELSE
+                            RepeatInst <= '0';
+                        END IF;
+                    ELSE
+                        -- 32 bit instruction
+                        InstV := InstI;
+                        Decompress := false;
+                        InstBuffer <= x"0000";
                         RepeatInst <= '0';
                     END IF;
+                    PCO <= PCI;
                 END IF;
-                PCO <= std_logic_vector(unsigned(PCI) - 2);
-            ELSE
-                IF IS_RVC(InstI) and InstI /= x"00000000" THEN -- all zeros is an illegal instruction, handle in decode
-                    -- Fresh 16 bit instruction
-                    InstV := x"0000" & InstLow;
-                    Decompress := true;
-                    InstBuffer <= InstHigh;
 
-                    -- Repeat the following instruction if we are still only processing the current one next clock
-                    IF IS_RVC(InstHigh) THEN
-                        RepeatInst <= '1';
-                    ELSE
-                        RepeatInst <= '0';
-                    END IF;
+                IF Decompress THEN
+                    -- Decompress instruction according to RISC-V specification
+                    CASE CQuadrant IS
+                        WHEN C0 =>
+                            CASE CFunct3 IS
+                                WHEN funct_CLW =>
+                                    InstO <= "00000" & InstV(5) & InstV(12 downto 10) & InstV(6) & "00" & DECOMPRESS_RVC_REG(InstV(9 downto 7)) & funct_MEM_W & DECOMPRESS_RVC_REG(InstV(4 downto 2)) & opcode_LOAD;
+                                WHEN funct_CSW =>
+                                    InstO <= "00000" & InstV(5) & InstV(12) & DECOMPRESS_RVC_REG(InstV(4 downto 2)) & DECOMPRESS_RVC_REG(InstV(9 downto 7)) & funct_MEM_W & InstV(11 downto 10) & "00" & opcode_STORE;
+                                WHEN OTHERS =>
+                                    InstO <= InstV; -- simply forward undefined instructions
+                            END CASE;
+                        WHEN C1 =>
+                            CASE CFunct3 IS
+                                WHEN funct_CNOP =>
+                                    InstO <= INST_NOP;
+                                WHEN funct_CJAL =>
+                                    InstO <= "0" & InstV(8) & InstV(10 downto 9) & InstV(6) & InstV(7) & InstV(2) & InstV(11) & InstV(5 downto 3) & InstV(12) & x"00" & "00001" & opcode_JAL;
+                                WHEN funct_CJ =>
+                                    InstO <= "0" & InstV(8) & InstV(10 downto 9) & InstV(6) & InstV(7) & InstV(2) & InstV(11) & InstV(5 downto 3) & InstV(12) & x"00" & "00000" & opcode_JAL;
+                                WHEN OTHERS => -- TODO
+                                    InstO <= InstV; -- TODO
+                            END CASE;
+                        WHEN C2 =>
+                            InstO <= InstV; -- TODO
+                        WHEN OTHERS =>
+                            REPORT "Invalid RVC quadrant"
+                            SEVERITY failure;
+                    END CASE;
                 ELSE
-                    -- 32 bit instruction
-                    InstV := InstI;
-                    Decompress := false;
-                    InstBuffer <= x"0000";
-                    RepeatInst <= '0';
+                    InstO <= InstV;
                 END IF;
-                PCO <= PCI;
+                InstDebug <= InstV;
             END IF;
-
-            IF Decompress THEN
-                -- Decompress instruction according to RISC-V specification
-                CASE CQuadrant IS
-                    WHEN C0 =>
-                        CASE CFunct3 IS
-                            WHEN funct_CLW =>
-                                InstO <= "00000" & InstV(5) & InstV(12 downto 10) & InstV(6) & "00" & DECOMPRESS_RVC_REG(InstV(9 downto 7)) & funct_MEM_W & DECOMPRESS_RVC_REG(InstV(4 downto 2)) & opcode_LOAD;
-                            WHEN funct_CSW =>
-                                InstO <= "00000" & InstV(5) & InstV(12) & DECOMPRESS_RVC_REG(InstV(4 downto 2)) & DECOMPRESS_RVC_REG(InstV(9 downto 7)) & funct_MEM_W & InstV(11 downto 10) & "00" & opcode_STORE;
-                            WHEN OTHERS =>
-                                InstO <= InstV; -- simply forward undefined instructions
-                        END CASE;
-                    WHEN C1 =>
-                        CASE CFunct3 IS
-                            WHEN funct_CNOP =>
-                                InstO <= INST_NOP;
-                            WHEN funct_CJAL =>
-                                InstO <= "0" & InstV(8) & InstV(10 downto 9) & InstV(6) & InstV(7) & InstV(2) & InstV(11) & InstV(5 downto 3) & InstV(12) & x"00" & "00001" & opcode_JAL;
-                            WHEN funct_CJ =>
-                                InstO <= "0" & InstV(8) & InstV(10 downto 9) & InstV(6) & InstV(7) & InstV(2) & InstV(11) & InstV(5 downto 3) & InstV(12) & x"00" & "00000" & opcode_JAL;
-                            WHEN OTHERS => -- TODO
-                                InstO <= InstV; -- TODO
-                        END CASE;
-                    WHEN C2 =>
-                        InstO <= InstV; -- TODO
-                    WHEN OTHERS =>
-                        REPORT "Invalid RVC quadrant"
-                        SEVERITY failure;
-                END CASE;
-            ELSE
-                InstO <= InstV;
-            END IF;
-            InstDebug <= InstV;
         END IF;
     END PROCESS;
 end Behavioral;
