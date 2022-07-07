@@ -43,6 +43,7 @@ entity DecompressStage is
         PCO        : out STD_LOGIC_VECTOR (31 downto 0);
         Interlock  : in  STD_LOGIC;
         Clear      : in  STD_LOGIC;
+        Stall      : in  STD_LOGIC;
         RepeatInst : out STD_LOGIC
     );
 end DecompressStage;
