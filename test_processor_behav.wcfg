@@ -14,15 +14,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="173.297 ns"></ZoomStartTime>
-      <ZoomEndTime time="693.518 ns"></ZoomEndTime>
-      <Cursor1Time time="270.100 ns"></Cursor1Time>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="52.574 ns"></ZoomEndTime>
+      <Cursor1Time time="24.486 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="222"></NameColumnWidth>
-      <ValueColumnWidth column_width="87"></ValueColumnWidth>
+      <NameColumnWidth column_width="312"></NameColumnWidth>
+      <ValueColumnWidth column_width="176"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="29" />
+   <WVObjectSize size="39" />
    <wvobject type="logic" fp_name="/test_processor/Reset">
       <obj_property name="ElementShortName">Reset</obj_property>
       <obj_property name="ObjectShortName">Reset</obj_property>
@@ -31,9 +31,51 @@
       <obj_property name="ElementShortName">Clock</obj_property>
       <obj_property name="ObjectShortName">Clock</obj_property>
    </wvobject>
+   <wvobject type="array" fp_name="/test_processor/DUT/Fetch_0/PCNext">
+      <obj_property name="ElementShortName">PCNext[31:0]</obj_property>
+      <obj_property name="ObjectShortName">PCNext[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/test_processor/DUT/Fetch_0/ImemAddr">
+      <obj_property name="ElementShortName">ImemAddr[9:0]</obj_property>
+      <obj_property name="ObjectShortName">ImemAddr[9:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/test_processor/DUT/IMemory/doutb">
+      <obj_property name="ElementShortName">doutb[31:0]</obj_property>
+      <obj_property name="ObjectShortName">doutb[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
    <wvobject type="array" fp_name="/test_processor/DUT/Fetch_0/PC">
       <obj_property name="ElementShortName">PC[31:0]</obj_property>
       <obj_property name="ObjectShortName">PC[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/test_processor/DUT/DecompressStage_0/PCI">
+      <obj_property name="ElementShortName">PCI[31:0]</obj_property>
+      <obj_property name="ObjectShortName">PCI[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/test_processor/DUT/DecompressStage_0/InstI">
+      <obj_property name="ElementShortName">InstI[31:0]</obj_property>
+      <obj_property name="ObjectShortName">InstI[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/test_processor/DUT/DecompressStage_0/PCO">
+      <obj_property name="ElementShortName">PCO[31:0]</obj_property>
+      <obj_property name="ObjectShortName">PCO[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/test_processor/DUT/DecompressStage_0/InstO">
+      <obj_property name="ElementShortName">InstO[31:0]</obj_property>
+      <obj_property name="ObjectShortName">InstO[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/test_processor/DUT/DecompressStage_0/U0/InstBufferUsed">
+      <obj_property name="ElementShortName">InstBufferUsed</obj_property>
+      <obj_property name="ObjectShortName">InstBufferUsed</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/test_processor/DUT/DecompressStage_0/U0/InstBuffer">
+      <obj_property name="ElementShortName">InstBuffer[15:0]</obj_property>
+      <obj_property name="ObjectShortName">InstBuffer[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/test_processor/DUT/DecompressStage_0/RepeatInst">
+      <obj_property name="ElementShortName">RepeatInst</obj_property>
+      <obj_property name="ObjectShortName">RepeatInst</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/test_processor/DUT/Decode_0/Inst">
       <obj_property name="ElementShortName">Inst[31:0]</obj_property>
