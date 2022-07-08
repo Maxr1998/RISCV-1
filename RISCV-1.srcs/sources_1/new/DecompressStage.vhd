@@ -79,10 +79,12 @@ architecture Behavioral of DecompressStage is
     signal InstDebug      : STD_LOGIC_VECTOR (31 downto 0);
 begin
     PROCESS (Clock, Reset)
-        VARIABLE InstV      : STD_LOGIC_VECTOR (31 downto 0);
+        VARIABLE InstBufferV : STD_LOGIC_VECTOR (15 downto 0);
+        VARIABLE RepeatInstV : STD_LOGIC;
+        VARIABLE InstV       : STD_LOGIC_VECTOR (31 downto 0);
         ALIAS    CQuadrant   : STD_LOGIC_VECTOR ( 1 downto 0) IS InstV( 1 downto 0);
         ALIAS    CFunct3     : STD_LOGIC_VECTOR ( 2 downto 0) IS InstV(15 downto 13);
-        VARIABLE Decompress : boolean;
+        VARIABLE Decompress  : boolean;
     BEGIN
         IF Reset = '0' THEN
             InstO <= x"00000000";
@@ -97,19 +99,19 @@ begin
                         -- Another 16 bit instruction - current InstI will be repeated in next clock 
                         InstV := x"0000" & InstBuffer;
                         Decompress := true;
-                        InstBuffer <= x"0000";
-                        RepeatInst <= '0';
+                        InstBufferV := x"0000";
+                        RepeatInstV := '0';
                     ELSE
                         -- 32 bit instruction - combine with low part from next instruction
                         InstV := InstLow & InstBuffer;
                         Decompress := false;
-                        InstBuffer <= InstHigh;
+                        InstBufferV := InstHigh;
 
                         -- Repeat the following instruction if we are still only processing the current one next clock
                         IF IS_RVC(InstHigh) THEN
-                            RepeatInst <= '1';
+                            RepeatInstV := '1';
                         ELSE
-                            RepeatInst <= '0';
+                            RepeatInstV := '0';
                         END IF;
                     END IF;
                     PCO <= std_logic_vector(unsigned(PCI) - 2);
@@ -118,23 +120,25 @@ begin
                         -- Fresh 16 bit instruction
                         InstV := x"0000" & InstLow;
                         Decompress := true;
-                        InstBuffer <= InstHigh;
+                        InstBufferV := InstHigh;
 
                         -- Repeat the following instruction if we are still only processing the current one next clock
                         IF IS_RVC(InstHigh) THEN
-                            RepeatInst <= '1';
+                            RepeatInstV := '1';
                         ELSE
-                            RepeatInst <= '0';
+                            RepeatInstV := '0';
                         END IF;
                     ELSE
                         -- 32 bit instruction
                         InstV := InstI;
                         Decompress := false;
-                        InstBuffer <= x"0000";
-                        RepeatInst <= '0';
+                        InstBufferV := x"0000";
+                        RepeatInstV := '0';
                     END IF;
                     PCO <= PCI;
                 END IF;
+
+                InstDebug <= InstV;
 
                 IF Decompress THEN
                     -- Decompress instruction according to RISC-V specification
@@ -156,7 +160,7 @@ begin
                                     InstO <= "0" & InstV(8) & InstV(10 downto 9) & InstV(6) & InstV(7) & InstV(2) & InstV(11) & InstV(5 downto 3) & InstV(12) & x"00" & "00001" & opcode_JAL;
                                 WHEN funct_CJ =>
                                     InstO <= "0" & InstV(8) & InstV(10 downto 9) & InstV(6) & InstV(7) & InstV(2) & InstV(11) & InstV(5 downto 3) & InstV(12) & x"00" & "00000" & opcode_JAL;
-                                WHEN OTHERS => -- TODO
+                                WHEN OTHERS =>
                                     InstO <= InstV; -- TODO
                             END CASE;
                         WHEN C2 =>
@@ -166,9 +170,18 @@ begin
                             SEVERITY failure;
                     END CASE;
                 ELSE
-                    InstO <= InstV;
+                    InstO <= InstV; -- normal 32-bit instruction
                 END IF;
-                InstDebug <= InstV;
+
+                IF Clear = '1' THEN
+                    InstBuffer <= x"0000";
+                    RepeatInst <= '0';
+                ELSIF Interlock = '0' THEN
+                    InstBuffer <= InstBufferV;
+                    RepeatInst <= RepeatInstV;
+                ELSE
+                    -- retain signal values when interlocked
+                END IF;
             END IF;
         END IF;
     END PROCESS;
