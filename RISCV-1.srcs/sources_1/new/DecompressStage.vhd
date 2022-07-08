@@ -82,8 +82,15 @@ begin
         VARIABLE InstBufferV : STD_LOGIC_VECTOR (15 downto 0);
         VARIABLE RepeatInstV : STD_LOGIC;
         VARIABLE InstV       : STD_LOGIC_VECTOR (31 downto 0);
+        VARIABLE Imm6V       : STD_LOGIC_VECTOR ( 5 downto 0);
+        VARIABLE Imm12V      : STD_LOGIC_VECTOR (11 downto 0);
+        VARIABLE Imm20V      : STD_LOGIC_VECTOR (19 downto 0);
         ALIAS    CQuadrant   : STD_LOGIC_VECTOR ( 1 downto 0) IS InstV( 1 downto 0);
         ALIAS    CFunct3     : STD_LOGIC_VECTOR ( 2 downto 0) IS InstV(15 downto 13);
+        ALIAS    CRegCL      : STD_LOGIC_VECTOR ( 2 downto 0) IS InstV(4 downto 2); -- RVC compressed low register
+        ALIAS    CRegCH      : STD_LOGIC_VECTOR ( 2 downto 0) IS InstV(9 downto 7); -- RVC compressed high register
+        ALIAS    CRegL       : STD_LOGIC_VECTOR ( 4 downto 0) IS InstV( 6 downto 2); -- RVC uncompressed high register
+        ALIAS    CRegH       : STD_LOGIC_VECTOR ( 4 downto 0) IS InstV(11 downto 7); -- RVC uncompressed high register
         VARIABLE Decompress  : boolean;
     BEGIN
         IF Reset = '0' THEN
@@ -145,21 +152,58 @@ begin
                     CASE CQuadrant IS
                         WHEN C0 =>
                             CASE CFunct3 IS
+                                WHEN funct_CADDI4SPN =>
+                                    -- addi rd', sp, nzimm
+                                    Imm12V := "000" & InstV(10 downto 7) & InstV(12 downto 11) & InstV(5) & InstV(6) & "0";
+                                    InstO <= Imm12V & "00010" & funct_ADD & DECOMPRESS_RVC_REG(CRegCL) & opcode_OP_IMM;
                                 WHEN funct_CLW =>
-                                    InstO <= "00000" & InstV(5) & InstV(12 downto 10) & InstV(6) & "00" & DECOMPRESS_RVC_REG(InstV(9 downto 7)) & funct_MEM_W & DECOMPRESS_RVC_REG(InstV(4 downto 2)) & opcode_LOAD;
+                                    -- lw rd', offset[6:2](rs1')
+                                    Imm12V := "00000" & InstV(5) & InstV(12 downto 10) & InstV(6) & "00";
+                                    InstO <= Imm12V & DECOMPRESS_RVC_REG(CRegCH) & funct_MEM_W & DECOMPRESS_RVC_REG(CRegCL) & opcode_LOAD;
                                 WHEN funct_CSW =>
-                                    InstO <= "00000" & InstV(5) & InstV(12) & DECOMPRESS_RVC_REG(InstV(4 downto 2)) & DECOMPRESS_RVC_REG(InstV(9 downto 7)) & funct_MEM_W & InstV(11 downto 10) & "00" & opcode_STORE;
+                                    -- sw rs2', offset[6:2](rs1')
+                                    InstO <= ("00000" & InstV(5) & InstV(12)) & DECOMPRESS_RVC_REG(CRegCL) & DECOMPRESS_RVC_REG(CRegCH) & funct_MEM_W & (InstV(11 downto 10) & InstV(6) & "00") & opcode_STORE;
                                 WHEN OTHERS =>
                                     InstO <= InstV; -- simply forward undefined instructions
                             END CASE;
                         WHEN C1 =>
                             CASE CFunct3 IS
-                                WHEN funct_CNOP =>
-                                    InstO <= INST_NOP;
-                                WHEN funct_CJAL =>
-                                    InstO <= "0" & InstV(8) & InstV(10 downto 9) & InstV(6) & InstV(7) & InstV(2) & InstV(11) & InstV(5 downto 3) & InstV(12) & x"00" & "00001" & opcode_JAL;
+                                WHEN funct_CADDI => -- C.ADDI
+                                    -- addi rd/rs1, rd/rs1, nzimm
+                                    Imm6V := InstV(12) & InstV(6 downto 2);
+                                    Imm12V := std_logic_vector(resize(signed(Imm6V), 12));
+                                    InstO <= Imm12V & CRegH & funct_ADD & CRegH & opcode_OP_IMM;
+                                WHEN funct_CJAL => -- C.JAL
+                                    -- jal x1, offset[11:1]
+                                    Imm20V := "0" & InstV(8) & InstV(10 downto 9) & InstV(6) & InstV(7) & InstV(2) & InstV(11) & InstV(5 downto 3) & InstV(12) & x"00";
+                                    InstO <= Imm20V & "00001" & opcode_JAL;
+                                WHEN funct_CLI =>
+                                    IF CRegH = "00000" THEN -- HINT
+                                        InstO <= INST_NOP;
+                                    ELSE -- C.LI
+                                        -- addi rd, x0, nzimm
+                                        Imm6V := InstV(12) & InstV(6 downto 2);
+                                        Imm12V := std_logic_vector(resize(signed(Imm6V), 12));
+                                        InstO <= Imm12V & "00000" & funct_ADD & CRegH & opcode_OP_IMM;
+                                    END IF;
+                                WHEN funct_CLUI =>
+                                    IF CRegH = "00000" THEN -- HINT
+                                        InstO <= INST_NOP;
+                                    ELSIF CRegH = "00010" THEN -- C.ADDI16SP
+                                        -- addi x2, x2, nzimm
+                                        Imm6V := InstV(12) & InstV(4 downto 3) & InstV(5) & InstV(2) & InstV(6);
+                                        Imm12V := std_logic_vector(resize(signed(Imm6V), 8)) & "0000";
+                                        InstO <= Imm12V & CRegH & funct_ADD & CRegH & opcode_OP_IMM;
+                                    ELSE -- C.LUI
+                                        -- lui, rd, nzuimm[17:12]
+                                        Imm6V := InstV(12) & InstV(6 downto 2);
+                                        Imm20V := std_logic_vector(resize(signed(Imm6V), 20));
+                                        InstO <= Imm20V & CRegH & opcode_LUI;
+                                    END IF;
                                 WHEN funct_CJ =>
-                                    InstO <= "0" & InstV(8) & InstV(10 downto 9) & InstV(6) & InstV(7) & InstV(2) & InstV(11) & InstV(5 downto 3) & InstV(12) & x"00" & "00000" & opcode_JAL;
+                                    -- jal x0, offset[11:1]
+                                    Imm20V := "0" & InstV(8) & InstV(10 downto 9) & InstV(6) & InstV(7) & InstV(2) & InstV(11) & InstV(5 downto 3) & InstV(12) & x"00";
+                                    InstO <= Imm20V & "00000" & opcode_JAL;
                                 WHEN OTHERS =>
                                     InstO <= InstV; -- TODO
                             END CASE;

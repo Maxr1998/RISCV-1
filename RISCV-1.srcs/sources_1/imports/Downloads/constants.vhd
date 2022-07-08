@@ -56,11 +56,14 @@ PACKAGE constants IS
   constant C2             : std_logic_vector(1 downto 0) := "10";
 
   -- Functs
+  constant funct_CADDI4SPN: std_logic_vector(2 downto 0) := "000";
   constant funct_CLW      : std_logic_vector(2 downto 0) := "010";
   constant funct_CSW      : std_logic_vector(2 downto 0) := "110";
 
-  constant funct_CNOP     : std_logic_vector(2 downto 0) := "000";
+  constant funct_CADDI    : std_logic_vector(2 downto 0) := "000";
   constant funct_CJAL     : std_logic_vector(2 downto 0) := "001";
+  constant funct_CLI      : std_logic_vector(2 downto 0) := "010";
+  constant funct_CLUI     : std_logic_vector(2 downto 0) := "011";
   constant funct_CJ       : std_logic_vector(2 downto 0) := "101";
 
 END constants;
