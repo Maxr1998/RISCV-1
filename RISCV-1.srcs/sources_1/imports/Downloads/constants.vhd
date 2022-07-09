@@ -48,6 +48,7 @@ PACKAGE constants IS
   -- Utility constants
   constant INST_NOP       : std_logic_vector(31 downto 0) := x"000" & "00000" & funct_ADD & "00000" & opcode_OP_IMM;
   constant IDC_32         : std_logic_vector(31 downto 0) := "--------------------------------";
+  constant ZERO_32        : std_logic_vector(31 downto 0) := x"00000000";
 
   -- RVC CONSTANTS
   -- Quadrants
@@ -64,6 +65,20 @@ PACKAGE constants IS
   constant funct_CJAL     : std_logic_vector(2 downto 0) := "001";
   constant funct_CLI      : std_logic_vector(2 downto 0) := "010";
   constant funct_CLUI     : std_logic_vector(2 downto 0) := "011";
+  constant funct_COP      : std_logic_vector(2 downto 0) := "100";
   constant funct_CJ       : std_logic_vector(2 downto 0) := "101";
+  constant funct_CBEQZ    : std_logic_vector(2 downto 0) := "110";
+  constant funct_CBNEZ    : std_logic_vector(2 downto 0) := "111";
 
+  -- Bits (11 downto 10) in Quadrant 1, funct_COP
+  constant funct_CSRLI    : std_logic_vector(1 downto 0) := "00";
+  constant funct_CSRAI    : std_logic_vector(1 downto 0) := "01";
+  constant funct_CANDI    : std_logic_vector(1 downto 0) := "10";
+  constant funct_CREGOP   : std_logic_vector(1 downto 0) := "11";
+
+  -- Bits (12 + 6 downto 5) in Quadrant 1, funct_CREGOP
+  constant funct_CSUB     : std_logic_vector(2 downto 0) := "000";
+  constant funct_CXOR     : std_logic_vector(2 downto 0) := "001";
+  constant funct_COR      : std_logic_vector(2 downto 0) := "010";
+  constant funct_CAND     : std_logic_vector(2 downto 0) := "011";
 END constants;

@@ -87,16 +87,16 @@ begin
         VARIABLE Imm20V      : STD_LOGIC_VECTOR (19 downto 0);
         ALIAS    CQuadrant   : STD_LOGIC_VECTOR ( 1 downto 0) IS InstV( 1 downto 0);
         ALIAS    CFunct3     : STD_LOGIC_VECTOR ( 2 downto 0) IS InstV(15 downto 13);
-        ALIAS    CRegCL      : STD_LOGIC_VECTOR ( 2 downto 0) IS InstV(4 downto 2); -- RVC compressed low register
-        ALIAS    CRegCH      : STD_LOGIC_VECTOR ( 2 downto 0) IS InstV(9 downto 7); -- RVC compressed high register
+        ALIAS    CRegCL      : STD_LOGIC_VECTOR ( 2 downto 0) IS InstV( 4 downto 2); -- RVC compressed low register
+        ALIAS    CRegCH      : STD_LOGIC_VECTOR ( 2 downto 0) IS InstV( 9 downto 7); -- RVC compressed high register
         ALIAS    CRegL       : STD_LOGIC_VECTOR ( 4 downto 0) IS InstV( 6 downto 2); -- RVC uncompressed high register
         ALIAS    CRegH       : STD_LOGIC_VECTOR ( 4 downto 0) IS InstV(11 downto 7); -- RVC uncompressed high register
         VARIABLE Decompress  : boolean;
     BEGIN
         IF Reset = '0' THEN
-            InstO <= x"00000000";
+            InstO <= ZERO_32;
             InstBuffer <= x"0000";
-            PCO <= x"00000000";
+            PCO <= ZERO_32;
             RepeatInst <= '0';
         ELSIF RISING_EDGE(Clock) THEN
             IF Stall = '0' THEN
@@ -123,7 +123,7 @@ begin
                     END IF;
                     PCO <= std_logic_vector(unsigned(PCI) - 2);
                 ELSE
-                    IF IS_RVC(InstI) and InstI /= x"00000000" THEN -- all zeros is an illegal instruction, handle in decode
+                    IF IS_RVC(InstI) and InstI /= ZERO_32 THEN -- all zeros is an illegal instruction, handle in decode
                         -- Fresh 16 bit instruction
                         InstV := x"0000" & InstLow;
                         Decompress := true;
@@ -168,42 +168,97 @@ begin
                             END CASE;
                         WHEN C1 =>
                             CASE CFunct3 IS
-                                WHEN funct_CADDI => -- C.ADDI
+                                WHEN funct_CADDI =>
                                     -- addi rd/rs1, rd/rs1, nzimm
                                     Imm6V := InstV(12) & InstV(6 downto 2);
                                     Imm12V := std_logic_vector(resize(signed(Imm6V), 12));
                                     InstO <= Imm12V & CRegH & funct_ADD & CRegH & opcode_OP_IMM;
-                                WHEN funct_CJAL => -- C.JAL
+                                WHEN funct_CJAL =>
                                     -- jal x1, offset[11:1]
                                     Imm20V := "0" & InstV(8) & InstV(10 downto 9) & InstV(6) & InstV(7) & InstV(2) & InstV(11) & InstV(5 downto 3) & InstV(12) & x"00";
                                     InstO <= Imm20V & "00001" & opcode_JAL;
                                 WHEN funct_CLI =>
-                                    IF CRegH = "00000" THEN -- HINT
+                                    IF CRegH = "00000" THEN
+                                        -- HINT
                                         InstO <= INST_NOP;
-                                    ELSE -- C.LI
+                                    ELSE
+                                        -- C.LI
                                         -- addi rd, x0, nzimm
                                         Imm6V := InstV(12) & InstV(6 downto 2);
                                         Imm12V := std_logic_vector(resize(signed(Imm6V), 12));
                                         InstO <= Imm12V & "00000" & funct_ADD & CRegH & opcode_OP_IMM;
                                     END IF;
                                 WHEN funct_CLUI =>
-                                    IF CRegH = "00000" THEN -- HINT
+                                    IF CRegH = "00000" THEN
+                                        -- HINT
                                         InstO <= INST_NOP;
-                                    ELSIF CRegH = "00010" THEN -- C.ADDI16SP
+                                    ELSIF CRegH = "00010" THEN
+                                        -- C.ADDI16SP
                                         -- addi x2, x2, nzimm
                                         Imm6V := InstV(12) & InstV(4 downto 3) & InstV(5) & InstV(2) & InstV(6);
                                         Imm12V := std_logic_vector(resize(signed(Imm6V), 8)) & "0000";
                                         InstO <= Imm12V & CRegH & funct_ADD & CRegH & opcode_OP_IMM;
-                                    ELSE -- C.LUI
+                                    ELSE
+                                        -- C.LUI
                                         -- lui, rd, nzuimm[17:12]
                                         Imm6V := InstV(12) & InstV(6 downto 2);
                                         Imm20V := std_logic_vector(resize(signed(Imm6V), 20));
                                         InstO <= Imm20V & CRegH & opcode_LUI;
                                     END IF;
+                                WHEN funct_COP => -- various ALU operations
+                                    CASE InstV(11 downto 10) IS -- funct level 2
+                                        WHEN funct_CSRLI =>
+                                            Imm6V := InstV(12) & InstV(6 downto 2);
+                                            IF Imm6V = "000000" THEN
+                                                -- HINT
+                                                InstO <= INST_NOP;
+                                            ELSE
+                                                -- srli rd', rd', 64
+                                                InstO <= "0000000" & InstV(6 downto 2) & DECOMPRESS_RVC_REG(CRegCH) & funct_SRL & DECOMPRESS_RVC_REG(CRegCH) & opcode_OP_IMM;
+                                            END IF;
+                                        WHEN funct_CSRAI =>
+                                            Imm6V := InstV(12) & InstV(6 downto 2);
+                                            IF Imm6V = "000000" THEN
+                                                -- HINT
+                                                InstO <= INST_NOP;
+                                            ELSE
+                                                -- srai rd', rd', 64
+                                                InstO <= "0100000" & InstV(6 downto 2) & DECOMPRESS_RVC_REG(CRegCH) & funct_SRL & DECOMPRESS_RVC_REG(CRegCH) & opcode_OP_IMM;
+                                            END IF;
+                                        WHEN funct_CANDI =>
+                                            -- andi rd', rd', imm[5:0]
+                                            Imm6V := InstV(12) & InstV(6 downto 2);
+                                            Imm12V := std_logic_vector(resize(signed(Imm6V), 12));
+                                            InstO <= Imm12V & DECOMPRESS_RVC_REG(CRegCH) & funct_AND & DECOMPRESS_RVC_REG(CRegCH) & opcode_OP_IMM;
+                                        WHEN funct_CREGOP =>
+                                            CASE InstV(12) & InstV(6 downto 5) IS -- (split) funct level 3
+                                                WHEN funct_CSUB =>
+                                                    -- sub rd', rd', rs2'
+                                                    InstO <= "0100000" & DECOMPRESS_RVC_REG(CRegCL) & DECOMPRESS_RVC_REG(CRegCH) & funct_ADD & DECOMPRESS_RVC_REG(CRegCH) & opcode_OP;
+                                                WHEN funct_CXOR =>
+                                                    -- xor rd', rd', rs2'
+                                                    InstO <= "0000000" & DECOMPRESS_RVC_REG(CRegCL) & DECOMPRESS_RVC_REG(CRegCH) & funct_XOR & DECOMPRESS_RVC_REG(CRegCH) & opcode_OP;
+                                                WHEN funct_COR =>
+                                                    -- or rd', rd', rs2'
+                                                    InstO <= "0000000" & DECOMPRESS_RVC_REG(CRegCL) & DECOMPRESS_RVC_REG(CRegCH) & funct_OR  & DECOMPRESS_RVC_REG(CRegCH) & opcode_OP;
+                                                WHEN funct_CAND =>
+                                                    -- and rd', rd', rs2'
+                                                    InstO <= "0000000" & DECOMPRESS_RVC_REG(CRegCL) & DECOMPRESS_RVC_REG(CRegCH) & funct_AND & DECOMPRESS_RVC_REG(CRegCH) & opcode_OP;
+                                                WHEN OTHERS =>
+                                                    -- RESERVED
+                                                    InstO <= ZERO_32;
+                                            END CASE;
+                                    END CASE;
                                 WHEN funct_CJ =>
                                     -- jal x0, offset[11:1]
                                     Imm20V := "0" & InstV(8) & InstV(10 downto 9) & InstV(6) & InstV(7) & InstV(2) & InstV(11) & InstV(5 downto 3) & InstV(12) & x"00";
                                     InstO <= Imm20V & "00000" & opcode_JAL;
+                                WHEN funct_CBEQZ =>
+                                    -- beq rs1', x0, offset[8:1]
+                                    InstO <= "000" & InstV(12) & InstV(6 downto 5) & InstV(2) & "00000" & DECOMPRESS_RVC_REG(CRegCH) & funct_BEQ & InstV(11 downto 10) & InstV(4 downto 3) & "0" & opcode_BRANCH;
+                                WHEN funct_CBNEZ =>
+                                    -- bne rs1', x0, offset[8:1]
+                                    InstO <= "000" & InstV(12) & InstV(6 downto 5) & InstV(2) & "00000" & DECOMPRESS_RVC_REG(CRegCH) & funct_BNE & InstV(11 downto 10) & InstV(4 downto 3) & "0" & opcode_BRANCH;
                                 WHEN OTHERS =>
                                     InstO <= InstV; -- TODO
                             END CASE;
@@ -224,7 +279,7 @@ begin
                     InstBuffer <= InstBufferV;
                     RepeatInst <= RepeatInstV;
                 ELSE
-                    -- retain signal values when interlocked
+                -- retain signal values when interlocked
                 END IF;
             END IF;
         END IF;
