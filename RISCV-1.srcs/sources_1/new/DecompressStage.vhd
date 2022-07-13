@@ -246,8 +246,11 @@ begin
                                                     InstO <= "0000000" & DECOMPRESS_RVC_REG(CRegCL) & DECOMPRESS_RVC_REG(CRegCH) & funct_AND & DECOMPRESS_RVC_REG(CRegCH) & opcode_OP;
                                                 WHEN OTHERS =>
                                                     -- RESERVED
-                                                    InstO <= ZERO_32;
+                                                    InstO <= INST_NOP;
                                             END CASE;
+                                        WHEN OTHERS =>
+                                            REPORT "Invalid funct2"
+                                            SEVERITY failure;
                                     END CASE;
                                 WHEN funct_CJ =>
                                     -- jal x0, offset[11:1]
@@ -260,10 +263,62 @@ begin
                                     -- bne rs1', x0, offset[8:1]
                                     InstO <= "000" & InstV(12) & InstV(6 downto 5) & InstV(2) & "00000" & DECOMPRESS_RVC_REG(CRegCH) & funct_BNE & InstV(11 downto 10) & InstV(4 downto 3) & "0" & opcode_BRANCH;
                                 WHEN OTHERS =>
-                                    InstO <= InstV; -- TODO
+                                    REPORT "Invalid funct3"
+                                    SEVERITY failure;
                             END CASE;
                         WHEN C2 =>
-                            InstO <= InstV; -- TODO
+                            CASE CFunct3 IS
+                                WHEN funct_CSLLI =>
+                                    Imm6V := InstV(12) & InstV(6 downto 2);
+                                    IF Imm6V = "000000" THEN
+                                        -- HINT
+                                        InstO <= INST_NOP;
+                                    ELSE
+                                        -- slli rd', rd', 64
+                                        InstO <= "0000000" & InstV(6 downto 2) & CRegH & funct_SLL & CRegH & opcode_OP_IMM;
+                                    END IF;
+                                WHEN funct_CLWSP =>
+                                    -- lw rd, offset[7:2](x2)
+                                    Imm12V := "0000" & InstV(3 downto 2) & InstV(12) & InstV(6 downto 4) & "00";
+                                    InstO <= Imm12V & "00010" & funct_MEM_W & CRegH & opcode_LOAD;
+                                WHEN funct_COP =>
+                                    CASE InstV(12) IS
+                                        WHEN '0' =>
+                                            IF CRegH /= "00000" and CRegL /= "00000" THEN
+                                                -- C.MV
+                                                -- add rd, x0, rs2
+                                                InstO <= "0000000" & CRegL & "00000" & funct_ADD & CRegH & opcode_OP;
+                                            ELSIF CRegH /= "00000" THEN
+                                                -- C.JR
+                                                -- jalr x0, rs1, 0
+                                                InstO <= x"000" & CRegH & "000" & "00000" & opcode_JALR;
+                                            ELSE
+                                                -- RESERVED
+                                                InstO <= INST_NOP;
+                                            END IF;
+                                        WHEN '1' =>
+                                            IF CRegL /= "00000" and CRegH /= "00000" THEN
+                                                -- C.ADD
+                                                -- add rd, rd, rs2
+                                                InstO <= "0000000" & CRegL & CRegH & funct_ADD & CRegH & opcode_OP;
+                                            ELSIF CRegH /= "00000" THEN
+                                                -- C.JALR
+                                                -- jalr x1, rs1, 0
+                                                InstO <= x"000" & CRegH & "000" & "00001" & opcode_JALR; -- TODO: properly handle PCNext as +2
+                                            ELSE
+                                                -- C.EBREAK
+                                                InstO <= INST_NOP; -- unsupported
+                                            END IF;
+                                        WHEN OTHERS =>
+                                            REPORT "Invalid funct"
+                                            SEVERITY failure;
+                                    END CASE;
+                                WHEN funct_CSWSP =>
+                                    -- sw rs2, offset[7:2](x2)
+                                    InstO <= ("0000" & InstV(8 downto 7) & InstV(12)) & CRegL & "00010" & funct_MEM_W & (InstV(11 downto 9) & "00") & opcode_STORE;
+                                WHEN OTHERS =>
+                                    InstO <= InstV; -- simply forward undefined instructions
+                            END CASE;
                         WHEN OTHERS =>
                             REPORT "Invalid RVC quadrant"
                             SEVERITY failure;

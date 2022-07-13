@@ -57,10 +57,12 @@ PACKAGE constants IS
   constant C2             : std_logic_vector(1 downto 0) := "10";
 
   -- Functs
+  -- Q0
   constant funct_CADDI4SPN: std_logic_vector(2 downto 0) := "000";
   constant funct_CLW      : std_logic_vector(2 downto 0) := "010";
   constant funct_CSW      : std_logic_vector(2 downto 0) := "110";
 
+  -- Q1
   constant funct_CADDI    : std_logic_vector(2 downto 0) := "000";
   constant funct_CJAL     : std_logic_vector(2 downto 0) := "001";
   constant funct_CLI      : std_logic_vector(2 downto 0) := "010";
@@ -81,4 +83,9 @@ PACKAGE constants IS
   constant funct_CXOR     : std_logic_vector(2 downto 0) := "001";
   constant funct_COR      : std_logic_vector(2 downto 0) := "010";
   constant funct_CAND     : std_logic_vector(2 downto 0) := "011";
+
+  -- Q2
+  constant funct_CSLLI    : std_logic_vector(2 downto 0) := "000";
+  constant funct_CLWSP    : std_logic_vector(2 downto 0) := "010";
+  constant funct_CSWSP    : std_logic_vector(2 downto 0) := "110";
 END constants;
