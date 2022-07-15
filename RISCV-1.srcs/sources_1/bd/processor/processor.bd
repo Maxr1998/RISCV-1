@@ -7,7 +7,7 @@
       "name": "processor",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
       "synth_flow_mode": "Hierarchical",
-      "tool_version": "2022.1",
+      "tool_version": "2021.2",
       "validated": "true"
     },
     "design_tree": {
@@ -30,6 +30,7 @@
       "Decode_0": "",
       "MemMux_0": "",
       "MemStage_0": "",
+      "Decompress_0": "",
       "DecompressStage_0": ""
     },
     "ports": {
@@ -483,7 +484,7 @@
         "inst_hier_path": "IMemory",
         "parameters": {
           "Coe_File": {
-            "value": "../../../../../../../test_files/compressed.coe"
+            "value": "../../../../../../../../Downloads/test_files/test_mem.coe"
           },
           "Enable_32bit_Address": {
             "value": "false"
@@ -1417,6 +1418,42 @@
           }
         }
       },
+      "Decompress_0": {
+        "vlnv": "xilinx.com:module_ref:Decompress:1.0",
+        "xci_name": "processor_Decompress_0_0",
+        "xci_path": "ip/processor_Decompress_0_0/processor_Decompress_0_0.xci",
+        "inst_hier_path": "Decompress_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "Decompress",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "InstI": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "InstO": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "RVC": {
+            "direction": "I"
+          },
+          "PCI": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "PCO": {
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          }
+        }
+      },
       "DecompressStage_0": {
         "vlnv": "xilinx.com:module_ref:DecompressStage:1.0",
         "xci_name": "processor_DecompressStage_0_0",
@@ -1451,6 +1488,9 @@
             "direction": "O",
             "left": "31",
             "right": "0"
+          },
+          "RVC": {
+            "direction": "O"
           },
           "PCI": {
             "direction": "I",
@@ -1732,19 +1772,37 @@
       "DecompressStage_0_InstO": {
         "ports": [
           "DecompressStage_0/InstO",
-          "DecodeStage_0/InstI"
+          "Decompress_0/InstI"
         ]
       },
       "DecompressStage_0_PCO": {
         "ports": [
           "DecompressStage_0/PCO",
-          "DecodeStage_0/PCI"
+          "Decompress_0/PCI"
+        ]
+      },
+      "DecompressStage_0_RVC": {
+        "ports": [
+          "DecompressStage_0/RVC",
+          "Decompress_0/RVC"
         ]
       },
       "DecompressStage_0_RepeatInst": {
         "ports": [
           "DecompressStage_0/RepeatInst",
           "Fetch_0/RepeatInst"
+        ]
+      },
+      "Decompress_0_InstO": {
+        "ports": [
+          "Decompress_0/InstO",
+          "DecodeStage_0/InstI"
+        ]
+      },
+      "Decompress_0_PCO": {
+        "ports": [
+          "Decompress_0/PCO",
+          "DecodeStage_0/PCI"
         ]
       },
       "ExecuteStage_0_AuxO": {
