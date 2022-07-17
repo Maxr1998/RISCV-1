@@ -73,8 +73,8 @@ begin
                 WHEN C0 =>
                     CASE CFunct3 IS
                         WHEN funct_CADDI4SPN =>
-                            -- addi rd', sp, nzimm
-                            Imm12V := "000" & InstI(10 downto 7) & InstI(12 downto 11) & InstI(5) & InstI(6) & "0";
+                            -- addi rd', sp/x2, nzuimm[9:2]
+                            Imm12V := "00" & InstI(10 downto 7) & InstI(12 downto 11) & InstI(5) & InstI(6) & "00";
                             InstO <= Imm12V & "00010" & funct_ADD & DECOMPRESS_RVC_REG(CRegCL) & opcode_OP_IMM;
                         WHEN funct_CLW =>
                             -- lw rd', offset[6:2](rs1')
