@@ -58,6 +58,9 @@ begin
             PCNextV := JumpTarget;
         ELSIF InterlockI = '1' or RepeatInst = '1' THEN
             PCNextV := PCI;
+        ELSIF PCI(1) = '1' THEN
+            -- Realign PC after unaligned jump due to RVC
+            PCNextV := std_logic_vector(unsigned(PCI) + 2);
         ELSE
             PCNextV := std_logic_vector(unsigned(PCI) + 4);
         END IF;

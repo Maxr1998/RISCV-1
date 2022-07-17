@@ -104,9 +104,22 @@ begin
                             RepeatInstV := '0';
                         END IF;
                     END IF;
-                    PCO <= std_logic_vector(unsigned(PCI) - 2);
+                    PCO <= PCI;
                 ELSE
-                    IF IS_RVC(InstI) and InstI /= ZERO_32 THEN -- all zeros is an illegal instruction, handle in decode
+                    IF PCI(1) = '1' THEN -- unaligned instruction after jump
+                        IF IS_RVC(InstHigh) THEN
+                            -- Just process the remaining 16 bit instruction
+                            InstV := x"0000" & InstHigh;
+                            RVCV := '1';
+                            RVCBufferV := x"0000";
+                        ELSE
+                            -- Incomplete 32 bit instruction, save to buffer and nop
+                            InstV := ZERO_32;
+                            RVCV := '0';
+                            RVCBufferV := InstHigh;
+                        END IF;
+                        RepeatInstV := '0';
+                    ELSIF IS_RVC(InstI) and InstI /= ZERO_32 THEN -- all zeros is an illegal instruction, handle in decode
                         -- Fresh 16 bit instruction
                         InstV := x"0000" & InstLow;
                         RVCV := '1';
