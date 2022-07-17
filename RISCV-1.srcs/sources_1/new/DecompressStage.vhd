@@ -82,7 +82,7 @@ begin
             PCO <= ZERO_32;
             RepeatInst <= '0';
         ELSIF RISING_EDGE(Clock) THEN
-            IF Stall = '0' and Interlock = '0' THEN
+            IF Stall = '0' and (Clear = '1' or Interlock = '0') THEN
                 -- Check if there's an instruction remaining in buffer after a compressed instruction
                 IF RVCBuffer /= x"0000" THEN
                     IF IS_RVC(RVCBuffer) THEN
