@@ -69,20 +69,23 @@ begin
     PROCESS (Clock, Reset)
     BEGIN
         IF Reset = '0' THEN
-            DestDataO <= x"00000000";
+            DestDataO <= ZERO_32;
             DestWrEnO <= '0';
             DestRegNoO <= "00000";
             MemAccessO <= '0';
-            MemRdData <= x"00000000";
+            MemRdData <= ZERO_32;
             RamReadEn <= '0';
             RamWriteEn <= '0';
+            RamByteEna <= "0000";
+            RamAddress <= ZERO_32;
+            RamWrData <= ZERO_32;
             FunctO <= "000";
             StallO <= '0';
             CurrentState <= Idle;
         ELSIF RISING_EDGE(Clock) THEN
             CASE CurrentState IS
                 WHEN Idle =>
-                    MemRdData <= x"00000000";
+                    MemRdData <= ZERO_32;
                     IF MemAccessI = '1' AND unsigned(DestDataI) >= 4096 THEN
                         RamAddress <= DestDataI(31 downto 2) & "00";
 
@@ -111,10 +114,10 @@ begin
                         StallO <= '0';
                         CurrentState <= Idle;
                     ELSE
-                        MemRdData <= x"00000000";
+                        MemRdData <= ZERO_32;
                     END IF;
                 WHEN Write =>
-                    MemRdData <= x"00000000";
+                    MemRdData <= ZERO_32;
                     RamWriteEn <= '0';
                     IF RamBusy = '0' THEN
                         StallO <= '0';
