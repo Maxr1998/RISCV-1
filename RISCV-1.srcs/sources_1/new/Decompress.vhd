@@ -37,7 +37,8 @@ entity Decompress is
     Port (
         InstI      : in  STD_LOGIC_VECTOR (31 downto 0);
         InstO      : out STD_LOGIC_VECTOR (31 downto 0);
-        RVC        : in  STD_LOGIC;
+        RVCI       : in  STD_LOGIC;
+        RVCO       : out STD_LOGIC;
         PCI        : in  STD_LOGIC_VECTOR (31 downto 0);
         PCO        : out STD_LOGIC_VECTOR (31 downto 0)
     );
@@ -54,9 +55,10 @@ architecture Behavioral of Decompress is
         RETURN "01" & reg;
     END FUNCTION;
 begin
+    RVCO <= RVCI;
     PCO <= PCI;
 
-    PROCESS (InstI, RVC)
+    PROCESS (InstI, RVCI)
         VARIABLE Imm6V       : STD_LOGIC_VECTOR ( 5 downto 0);
         VARIABLE Imm12V      : STD_LOGIC_VECTOR (11 downto 0);
         VARIABLE Imm20V      : STD_LOGIC_VECTOR (19 downto 0);
@@ -67,7 +69,7 @@ begin
         ALIAS    CRegL       : STD_LOGIC_VECTOR ( 4 downto 0) IS InstI( 6 downto 2); -- RVC uncompressed high register
         ALIAS    CRegH       : STD_LOGIC_VECTOR ( 4 downto 0) IS InstI(11 downto 7); -- RVC uncompressed high register
     BEGIN
-        IF RVC = '1' THEN
+        IF RVCI = '1' THEN
             -- Decompress instruction according to RISC-V specification
             CASE CQuadrant IS
                 WHEN C0 =>

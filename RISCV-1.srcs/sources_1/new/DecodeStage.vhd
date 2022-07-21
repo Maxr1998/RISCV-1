@@ -37,6 +37,8 @@ entity DecodeStage is
         Reset      : in  STD_LOGIC;
         InstI      : in  STD_LOGIC_VECTOR (31 downto 0);
         InstO      : out STD_LOGIC_VECTOR (31 downto 0);
+        RVCI       : in  STD_LOGIC;
+        RVCO       : out STD_LOGIC;
         PCI        : in  STD_LOGIC_VECTOR (31 downto 0);
         PCO        : out STD_LOGIC_VECTOR (31 downto 0);
         InterlockI : in  STD_LOGIC;
@@ -54,12 +56,14 @@ begin
     BEGIN
         IF Reset = '0' THEN
             InstO <= x"00000000";
+            RVCO <= '0';
             PCO <= x"00000000";
             InterlockO <= '0';
             ClearO <= '0';
         ELSIF RISING_EDGE(Clock) THEN
             IF Stall = '0' THEN
                 InstO <= InstI;
+                RVCO <= RVCI;
                 PCO <= PCI;
                 InterlockO <= InterlockI;
                 ClearO <= ClearI;

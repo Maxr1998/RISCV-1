@@ -36,6 +36,7 @@ use work.constants.all;
 entity Decode is
     Port (
         Inst       : in  STD_LOGIC_VECTOR (31 downto 0);
+        RVC        : in  STD_LOGIC;
         Funct      : out STD_LOGIC_VECTOR ( 2 downto 0);
         SrcRegNo1  : out STD_LOGIC_VECTOR ( 4 downto 0);
         SrcRegNo2  : out STD_LOGIC_VECTOR ( 4 downto 0);
@@ -86,7 +87,7 @@ begin
     -- Imm needs special care
     -- SelSrc2 needs special care
 
-    PROCESS (Inst, PC, InterlockI, Clear)
+    PROCESS (Inst, RVC, PC, InterlockI, Clear)
         VARIABLE DestWrEnV  : STD_LOGIC;
         VARIABLE JumpV      : STD_LOGIC;
         VARIABLE JumpRelV   : STD_LOGIC;
@@ -172,7 +173,11 @@ begin
                 DestWrEnV := '1';
 
                 Aux <= '-';
-                PCNext <= std_logic_vector(signed(PC) + 4);
+                IF RVC = '1' THEN
+                    PCNext <= std_logic_vector(signed(PC) + 2);
+                ELSE
+                    PCNext <= std_logic_vector(signed(PC) + 4);
+                END IF;
                 JumpV := '1';
                 JumpRelV := '1';
                 ImmJ := Inst(31) & Inst(19 downto 12) & Inst(20) & Inst(30 downto 21) & '0';
@@ -189,7 +194,11 @@ begin
                 DestWrEnV := '1';
 
                 Aux <= '0'; -- ADD
-                PCNext <= std_logic_vector(signed(PC) + 4);
+                IF RVC = '1' THEN
+                    PCNext <= std_logic_vector(signed(PC) + 2);
+                ELSE
+                    PCNext <= std_logic_vector(signed(PC) + 4);
+                END IF;
                 JumpV := '1';
                 JumpRelV := '0';
                 JumpTarget <= IDC_32;
