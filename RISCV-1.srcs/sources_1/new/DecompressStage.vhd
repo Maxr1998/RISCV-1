@@ -104,7 +104,7 @@ begin
                             RepeatInstV := '0';
                         END IF;
                     END IF;
-                    PCO <= PCI;
+                    PCO <= std_logic_vector(unsigned(PCI) - 2); -- PC of instruction is 2 bytes before the current one
                 ELSE
                     IF PCI(1) = '1' THEN -- unaligned instruction after jump
                         IF IS_RVC(InstHigh) THEN
