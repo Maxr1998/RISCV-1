@@ -15,14 +15,14 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="91.314 ns"></ZoomEndTime>
-      <Cursor1Time time="114.250 ns"></Cursor1Time>
+      <ZoomEndTime time="71.001 ns"></ZoomEndTime>
+      <Cursor1Time time="50.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="184"></NameColumnWidth>
-      <ValueColumnWidth column_width="109"></ValueColumnWidth>
+      <ValueColumnWidth column_width="105"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="58" />
+   <WVObjectSize size="60" />
    <wvobject type="logic" fp_name="/test_processor/Reset">
       <obj_property name="ElementShortName">Reset</obj_property>
       <obj_property name="ObjectShortName">Reset</obj_property>
@@ -54,11 +54,21 @@
       <obj_property name="ObjectShortName">Interlock</obj_property>
       <obj_property name="label">DS/Interlock</obj_property>
    </wvobject>
+   <wvobject type="array" fp_name="/test_processor/DUT/DecompressStage_0/PCO">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">PCO[31:0]</obj_property>
+      <obj_property name="ObjectShortName">PCO[31:0]</obj_property>
+      <obj_property name="label">DS/PCO</obj_property>
+   </wvobject>
    <wvobject type="array" fp_name="/test_processor/DUT/DecompressStage_0/InstO">
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="ElementShortName">InstO[31:0]</obj_property>
       <obj_property name="ObjectShortName">InstO[31:0]</obj_property>
       <obj_property name="label">DS/InstO</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/test_processor/DUT/DecompressStage_0/U0/RVCBuffer">
+      <obj_property name="ElementShortName">RVCBuffer[15:0]</obj_property>
+      <obj_property name="ObjectShortName">RVCBuffer[15:0]</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/test_processor/DUT/DecompressStage_0/RVC">
       <obj_property name="DisplayName">label</obj_property>
